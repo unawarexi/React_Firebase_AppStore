@@ -1,21 +1,20 @@
-import React from 'react'
-import TestPage from './Pages/TestPage'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import React, { Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
+import Layouts from "./layouts/Layouts";
+import {Home} from "./Pages/ExpComp"
 
 const App = () => {
   return (
-    <div>
-      <>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<TestPage />} />
-          </Routes>
-        </BrowserRouter>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="w-sreen h-screen items-center flex justify-center text-blue-600 font-semibold">
+        <Routes>
+          <Route  element={<Layouts />} >
+            <Route path="/" element={<Home />}></Route>
+          </Route>
+        </Routes>
+      </div>
+    </Suspense>
+  );
+};
 
-      </>
-
-    </div>
-  )
-}
-
-export default App
+export default App;

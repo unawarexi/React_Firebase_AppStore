@@ -11,3 +11,11 @@
 - npm install auto-prefixer
 - and re run npx tailwindcss -p
 - create a `gitignore` to ignore node_modules
+
+## SETING UP ROUTES
+
+- the browerrouter in main.jsx and {routes, route} in APP.jsx serves the path links
+- the {suspense} in the App is to withhold the application from rendering
+  - due to wrong user links
+  - unconfigured specific links
+  - helps with waiting for a response using async func.
