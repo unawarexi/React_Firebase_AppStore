@@ -1,5 +1,7 @@
 # Project setup && Envirinmental Setup
 
+[Mobile AppStore](./thumb.png)
+
 for this project we're going to be making use of
 
 - REACT JS
