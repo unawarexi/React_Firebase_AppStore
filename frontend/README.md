@@ -34,5 +34,6 @@
 
 | ERROR ENCOUNTERED | SOLUTION |
 | -------- | -------- |
-| Row 1, Col 1 | Row 1, Col 2 |
+| Uncaught Error: Absolute route path "/home/" nested under path "/admin" is not valid. 
+| An absolute child route path must start with the combined path of all its parent routes. | Row 1, Col 2 |
 | Row 2, Col 1 | Row 2, Col 2 |
