@@ -1,7 +1,5 @@
 # Project setup && Envirinmental Setup
 
-[Mobile AppStore](./thumb.png)
-
 for this project we're going to be making use of
 
 - REACT JS
@@ -9,6 +7,8 @@ for this project we're going to be making use of
 - FIREBASE AS A SERVICE
 - TAILWIND FOR STYLES
 - MATERIAL-UI FOR SOME EASY COMPONENTS
+
+![Mobile AppStore](./thumb.png)
 
 
 
