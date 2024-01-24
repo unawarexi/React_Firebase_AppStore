@@ -28,3 +28,11 @@
 #### 3ii layouts folder
 - contains header and footer and an out let tag
 - this makes the footer and header constant while the body changes
+
+
+## ERRORS ENCOUTERED AND HOW TO FIX
+
+| ERROR ENCOUNTERED | SOLUTION |
+| -------- | -------- |
+| Row 1, Col 1 | Row 1, Col 2 |
+| Row 2, Col 1 | Row 2, Col 2 |
