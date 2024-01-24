@@ -34,13 +34,11 @@
 
 | ERROR ENCOUNTERED | SOLUTION |
 | -------- | -------- |
-| Uncaught Error: Absolute route path "/home/" nested under path "/admin" is not valid.  An absolute child route path must start with the combined path of all its parent routes. | 
-To resolve the error, you need to adjust the path of the AdminHome component so that it is relative to the "/admin" route. In React Router v6, nested routes should have paths that are relative to their parent routes.
- ```javascript
+| Uncaught Error: Absolute route path "/home/" nested under path "/admin" is not valid.  An absolute child route path must start with the combined path of all its parent routes. | To resolve the error, you need to adjust the path of the AdminHome component so that it is relative to the "/admin" route. In React Router v6, nested routes should have paths that are relative to their parent routes.
+```javascript
  <Route path="/admin" element={<AdminLayout />}>
       {/* Adjust the path here to be relative to "/admin"  use index instead of route path=="/"*/}
       <Route index element={<AdminHome />} /> 
     </Route>
-``` 
-|
+ ``` |
 | Row 2, Col 1 | Row 2, Col 2 |
