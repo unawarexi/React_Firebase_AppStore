@@ -1,6 +1,6 @@
 # FRONTEND SETUP
 
-## procedures
+## 1 procedures
 
 - npm create vitea@latest --frontend React
 - cd into the creted folder and `NPM INSTALL`
@@ -12,10 +12,19 @@
 - and re run npx tailwindcss -p
 - create a `gitignore` to ignore node_modules
 
-## SETING UP ROUTES
+## 2 SETING UP ROUTES
 
 - the browerrouter in main.jsx and {routes, route} in APP.jsx serves the path links
 - the {suspense} in the App is to withhold the application from rendering
   - due to wrong user links
   - unconfigured specific links
   - helps with waiting for a response using async func.
+
+
+## 3 File Structuring
+#### 3i pages folder 
+- contains home and other several navigation pages
+
+#### 3ii layouts folder
+- contains header and footer and an out let tag
+- this makes the footer and header constant while the body changes
