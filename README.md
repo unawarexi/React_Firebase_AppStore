@@ -8,17 +8,7 @@ for this project we're going to be making use of
 - TAILWIND FOR STYLES
 - MATERIAL-UI FOR SOME EASY COMPONENTS
 
-## procedures
 
-- npm create vitea@latest --frontend React
-- cd into the creted folder and `NPM INSTALL`
-- go to the the tailwind css docs to config tailwind `add the -p for auto instal auto prefixer`
-
-- npx tailwindcss -p
-  4 install auto prefixer if it didn't auto install or you have error with tailwind installation
-- npm install auto-prefixer
-- and re run npx tailwindcss -p
-  4 create a `gitignore` to ignore node_modules
 
 ## version control
  we'll be using git and github
