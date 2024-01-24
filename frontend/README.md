@@ -31,7 +31,7 @@
 - contains header and footer and an out let tag
 - this makes the footer and header constant while the body changes
 
-## ERRORS ENCOUTERED AND HOW TO FIX
+## ERRORS ENCOUTERED AND HOW I FIX
 
 | ERROR ENCOUNTERED | SOLUTION |
 | ----------------- | -------- |
