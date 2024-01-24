@@ -35,7 +35,9 @@
 
 | ERROR ENCOUNTERED | SOLUTION |
 | ----------------- | -------- |
-| Uncaught Error: Absolute route path "/home/" nested under path "/admin" is not valid. | To resolve the error, you need to adjust the path of the `AdminHome` component so that it is relative to the "/admin" route. In React Router v6, nested routes should have paths that are relative to their parent routes. 
+| ERROR 1 | SOLUTION 1 |
+| ----------------- | -------- |
+| Uncaught Error: Absolute route path "/home/" nested under path "/admin" is not valid. | To resolve the error, you need to adjust the path of the `AdminHome` component so that it is relative to the "/admin" route. In React Router v6, nested routes should have paths that are relative to their parent routes |
 
   ```javascript
   <Route path="/admin" element={<AdminLayout />}>
@@ -43,3 +45,6 @@
     <Route index element={<AdminHome />} />
   </Route>
  ```
+ 
+| ----------------- | -------- |
+ | Uncaught Error: Absolute route path "/home/" nested under path "/admin" is not valid. | To resolve the error, you need to adjust the path of the `AdminHome` component so that it is relative to the "/admin" route. In React Router v6, nested routes should have paths that are relative to their parent routes. 
