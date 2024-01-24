@@ -10,9 +10,9 @@ for this project we're going to be making use of
 
 ## procedures
 
-1 npm create vitea@latest --frontend React
-2 cd into the creted folder and `NPM INSTALL`
-3 go to the the tailwind css docs to config tailwind `add the -p for auto instal auto prefixer`
+- npm create vitea@latest --frontend React
+- cd into the creted folder and `NPM INSTALL`
+- go to the the tailwind css docs to config tailwind `add the -p for auto instal auto prefixer`
 
 - npx tailwindcss -p
   4 install auto prefixer if it didn't auto install or you have error with tailwind installation
@@ -21,8 +21,7 @@ for this project we're going to be making use of
   4 create a `gitignore` to ignore node_modules
 
 ## version control
-
-we'll be using git and github
+ we'll be using git and github
 
 - #### Method One
 
