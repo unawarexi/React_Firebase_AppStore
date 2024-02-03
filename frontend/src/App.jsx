@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
-import Layouts from "./layouts/Layouts";
-import { AdminHome, Home, UserProfile } from "./Pages/ExpComp";
-import AdminLayout from "./layouts/AdminLayout";
+
+import { AdminHome, Authentication, Home, UserProfile } from "./Pages/ExpPages";
+import { AdminLayout, AuthLayout, Layouts } from "./layouts/ExpLayouts";
 
 const App = () => {
   return (
@@ -13,11 +13,17 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/profile/:uid" element={<UserProfile />} />
 
-            {/* ================= ADMIN ROUTE ================== */}
+            {/* === ADMIN ROUTE === */}
             <Route path="/admin" element={<AdminLayout />}>
-              <Route  index element={<AdminHome />} />
+              <Route index element={<AdminHome />} />
             </Route>
-            {/* ================= END OF ADMIN ROUTE ================== */}
+
+            {/* === AUTHENTICATION ROUTE === */}
+            <Route path="/auth/*" element={<AuthLayout />}>
+              <Route index element={<Authentication />} />
+            </Route>
+
+            
           </Route>
         </Routes>
         {/* ================= END OF LAYOUT ROUTE ================== */}
