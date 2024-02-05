@@ -1,0 +1,2 @@
+# AUTHENTICATION WITH FIREBASE
+- Using `Gmail`

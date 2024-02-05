@@ -1,10 +1,21 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { AdminHome, Authentication, Home, UserProfile } from "./Pages/ExpPages";
 import { AdminLayout, AuthLayout, Layouts } from "./layouts/ExpLayouts";
+import { auth } from "./config/Firebase.config";
 
 const App = () => {
+  useEffect(() => {
+    auth.onAuthStateChanged((userCred) => {
+      if (userCred) {
+        userCred.getIdToken().then((token) => {
+          console.log(token);
+        });
+      }
+    });
+  }, []);
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="w-sreen h-screen items-center flex justify-center text-blue-600 font-semibold">
@@ -22,8 +33,6 @@ const App = () => {
             <Route path="/auth/*" element={<AuthLayout />}>
               <Route index element={<Authentication />} />
             </Route>
-
-            
           </Route>
         </Routes>
         {/* ================= END OF LAYOUT ROUTE ================== */}
