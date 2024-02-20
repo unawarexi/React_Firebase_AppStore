@@ -12,57 +12,46 @@ admin.initializeApp();
 const db = admin.firestore();
 
 // function to validatethe user jwt token coming from the app.jsx in client folder
-exports.validateUserJWTToken = functions.https.onRequest(async (req, res) => {
-  // enabling cors
-  cors(req, res, async () => {
-    const authorizationHeader = request.get("Authorization");
+exports.validateUserJWTToken = functions.https.onRequest(
+  async (request, response) => {
+    // enabling cors
+    cors(request, response, async () => {
+      const authorizationHeader = request.get("Authorization");
 
-    // check if the authorization header is present
-    if (!authorizationHeader || !authorizationHeader.startsWith("Bearer")) {
-      return response.status(401).json({ error: "Unauthorized" });
-    }
-
-    // Extract the token from the authorization header
-    const token = authorizationHeader.split("Bearer")[1];
-
-    try {
-
-       // Verify the JWT token
-      const decodedToken = await admin.auth().verifyIdToken(token, "your-secret-key");
-      
-      // If verification is successful, respond with success message
-      if (decodedToken) {
-        return res.status(200).json({Success: true, user: decodedToken})
+      // check if the authorization header is present
+      if (!authorizationHeader || !authorizationHeader.startsWith("Bearer")) {
+        return response.status(401).json({ error: "Unauthorized" });
       }
 
-    } catch (error) {
-      console.error("Token validation error: ", error.message);
-      return response
-        .status(401)
-        .json({ error: error.message, status: "Unauthorized" });
-    }
+      // Extract the token from the authorization header
+      const token = authorizationHeader.split("Bearer ")[1];
 
-    // try {
-    //   // Check if the request contains the JWT token
-    //   const token = request.headers.authorization;
-    //   if (!token) {
-    //     throw new Error("No token provided");
-    //   }
+      try {
+        // Verify the JWT token
+        const decodedToken = await admin
+          .auth()
+          .verifyIdToken(token, "your-secret-key");
 
-    //   // Extract the token from the authorization header
-    //   const bearerToken = token.split(" ")[1];
+        // If verification is successful, respond with success message
+        if (decodedToken) {
+          const docRef = db.collection("users").doc(decodedToken.uid);
+          const doc = await docRef.get();
 
-    //   // Verify the JWT token
-    //   const decodedToken = jwt.verify(bearerToken, "your-secret-key");
+          if (!doc.exists) {
+            const userRef = await db.collection("users").doc(decodedToken.uid);
+            await userRef.set(decodedToken);
+          }
 
-    //   // If verification is successful, respond with success message
-    //   response
-    //     .status(200)
-    //     .json({ message: "Token is valid", data: decodedToken });
-
-    // } catch (error) {
-    //   console.error("Token validation error:", error.message);
-    //   response.status(401).json({ error: "Unauthorized" });
-    // }
-  });
-});
+          return response
+            .status(200)
+            .json({ Success: true, user: decodedToken });
+        }
+      } catch (error) {
+        console.error("Token validation error: ", error.message);
+        return response
+          .status(401)
+          .json({ error: error.message, status: "Unauthorized" });
+      }
+    });
+  }
+);

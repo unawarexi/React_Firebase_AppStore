@@ -14,7 +14,11 @@ const App = () => {
         });
       }
     });
-  }, []);
+
+
+    //cleanup the event listener wghwen the componet unmounts
+    return () => unsubcribe();
+  }, [auth]);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
