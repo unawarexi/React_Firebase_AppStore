@@ -5,23 +5,16 @@ import { AdminHome, Authentication, Home, UserProfile } from "./Pages/ExpPages";
 import { AdminLayout, AuthLayout, Layouts } from "./layouts/ExpLayouts";
 import { auth } from "./config/Firebase.config";
 
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+import {ReactQueryDevtools} from "react-query/devtools"
+
 const App = () => {
-  useEffect(() => {
-    auth.onAuthStateChanged((userCred) => {
-      if (userCred) {
-        userCred.getIdToken().then((token) => {
-          console.log(token);
-        });
-      }
-    });
 
-
-    //cleanup the event listener wghwen the componet unmounts
-    return () => unsubcribe();
-  }, [auth]);
+  const queryClient = new QueryClient()
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+   <QueryClientProvider client = {queryClient}>
+     <Suspense fallback={<div>Loading...</div>}>
       <div className="w-sreen h-screen items-center flex justify-center text-blue-600 font-semibold">
         <Routes>
           <Route element={<Layouts />}>
@@ -42,6 +35,13 @@ const App = () => {
         {/* ================= END OF LAYOUT ROUTE ================== */}
       </div>
     </Suspense>
+
+
+     {/* ================= Devtools to handle the state library ================== */}
+     <ReactQueryDevtools initialIsOpen = {false} />
+
+     
+   </QueryClientProvider>
   );
 };
 

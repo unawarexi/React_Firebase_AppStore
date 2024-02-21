@@ -4,10 +4,14 @@ import { FcGoogle } from "react-icons/fc";
 
 import { signInWithRedirect, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../config/Firebase.config";
+import useUser from "../hooks/user/UseUser";
+
 
 
 const Authentication = () => {
   const googleProvider = new GoogleAuthProvider();
+
+  const {} = useUser()
 
   const handleLoginAction = useCallback(async () => {
     try {
