@@ -1,1 +1,1 @@
-export const baseUrl = "http://127.0.0.1:5001/mobile-appstore-fce23/us-central1/"
+export const baseURL = "http://127.0.0.1:5001/mobile-appstore-fce23/us-central1"

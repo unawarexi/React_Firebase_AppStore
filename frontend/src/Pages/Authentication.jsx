@@ -1,26 +1,38 @@
-import React, {useCallback} from "react";
+import React, { useCallback, useEffect } from "react";
 import { LoginBG } from "../assets/image";
 import { FcGoogle } from "react-icons/fc";
 
 import { signInWithRedirect, GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../config/Firebase.config";
 import useUser from "../hooks/user/UseUser";
-
-
+import { useNavigate } from "react-router-dom";
 
 const Authentication = () => {
   const googleProvider = new GoogleAuthProvider();
 
-  const {} = useUser()
+  const { data: user, isLoading, isError, refetch } = useUser();
+  const navigate = useNavigate();
 
-  const handleLoginAction = useCallback(async () => {
+  useEffect(() => {
+    if (!isLoading && user) {
+      navigate("/", { replace: true });
+    }
+  }, [isLoading, user]);
+
+  if (isLoading) {
+    return <div>Loaading...</div>;
+  }
+
+  const handleLoginAction = async () => {
     try {
       const userCred = await signInWithRedirect(auth, googleProvider);
-      console.log(userCred);
+      if (userCred) {
+        console.log(userCred);
+      }
     } catch (error) {
       console.error("Error signing in:", error.message);
     }
-  }, []);
+  };
 
   return (
     <div
