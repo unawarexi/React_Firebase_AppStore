@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const { user } = require("firebase-functions/v1/auth");
 
 const cors = require("cors")({ origin: true });
 
@@ -27,6 +28,7 @@ exports.validateUserJWTToken = functions.https.onRequest(
       const token = authorizationHeader.split("Bearer ")[1];
 
       try {
+        let userData;
         // Verify the JWT token
         const decodedToken = await admin
           .auth()
@@ -39,12 +41,14 @@ exports.validateUserJWTToken = functions.https.onRequest(
 
           if (!doc.exists) {
             const userRef = await db.collection("users").doc(decodedToken.uid);
-            await userRef.set(decodedToken);
-          }
+            userData = decodedToken;
+            userData.role = "member";
+            await userRef.set(userData);
+            return response.status(200).json({ Success: true, user: userData });
 
-          return response
-            .status(200)
-            .json({ Success: true, user: decodedToken });
+          } else {
+            return response.status(200).json({ Success: true, user: doc.data() });
+          }
         }
       } catch (error) {
         console.error("Token validation error: ", error.message);

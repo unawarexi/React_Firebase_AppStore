@@ -17,7 +17,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Suspense fallback={<div>Loading...</div>}>
-        <div className="w-sreen h-screen items-center flex justify-center text-blue-600 font-semibold">
+        <div >
           <Routes>
             <Route element={<Layouts />}>
               <Route path="/" element={<Home />} />

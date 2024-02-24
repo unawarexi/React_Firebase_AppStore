@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 const Layouts = () => {
   return (
     <div>
-        <p>HEADER</p>
+        <p></p>
         <Outlet></Outlet>
 
         <p>Footer</p>
