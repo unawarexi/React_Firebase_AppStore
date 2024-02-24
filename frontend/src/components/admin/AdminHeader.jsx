@@ -4,7 +4,7 @@ import {Logo} from "../../assets/image"
 import useUser from '../../hooks/user/UseUser'
 
 const AdminHeader = () => {
-    const {data, isLoading, isError, refetch} = useUser();
+    const {data : user, isLoading : userLoading,  isError, refetch} = useUser();
   return (
     <div className='w-full flex items-center justify-between'>
         {/**logo */}
