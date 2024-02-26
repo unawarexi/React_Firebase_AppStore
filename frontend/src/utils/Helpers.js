@@ -1,3 +1,5 @@
+import { auth } from "../config/Firebase.config";
+
 export const baseURL = "http://127.0.0.1:5001/mobile-appstore-fce23/us-central1"
 
 
@@ -10,3 +12,10 @@ export const Menus = [
     { id: 10005, menu: `App's`, uri: "/admin/apps", isAdmin: true },
   ];
   
+
+
+  export const signOutUser = async (queryClient) => {
+    await auth.signOut().then(() => {
+      queryClient.setQueryData("user", null);
+    });
+  };

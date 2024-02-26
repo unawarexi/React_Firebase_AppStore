@@ -1,14 +1,45 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Avatar, Logo } from "../../assets/image";
 import useUser from "../../hooks/user/UseUser";
 
 import { FaNairaSign } from "react-icons/fa6";
 import { FaChevronDown } from "react-icons/fa6";
-import { Menus } from "../../utils/Helpers";
+import { Menus, signOutUser } from "../../utils/Helpers";
+import { useQueryClient } from "react-query";
+
+import { motion, AnimatePresence } from "framer-motion";
+import { fadeInUp } from "../../animation/Animations";
 
 const AdminHeader = () => {
   const { data: user, isLoading: userLoading, isError, refetch } = useUser();
+  const queryClient = useQueryClient();
+
+  const [isHover, setisHover] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(null);
+
+  const handleMouseEnter = () => {
+    setisHover(true);
+    // Clear any existing timeout
+    clearTimeout(timeoutId);
+  };
+
+  const handleMouseOut = () => {
+    // Set a new timeout to close the dropdown
+    const id = setTimeout(() => {
+      setisHover(false);
+    }, 3000);
+    // Store the timeout ID for later reference
+    setTimeoutId(id);
+  };
+
+  // Clear the timeout when the component unmounts to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [timeoutId]);
+
   return (
     <div className="w-full flex items-center justify-between">
       {/**logo */}
@@ -44,6 +75,10 @@ const AdminHeader = () => {
         {/**image content */}
 
         <div
+          //--------- handles auto close without options hover and
+          // -------- handles display after hover
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseOut} //handling thr timer part
           className=" w-16 h-16 rounded-full flex items-center p-1 justify-center relative
          bg-gradient-to-b from-bg-heroPrimary to bg-heroSecodary"
         >
@@ -61,22 +96,43 @@ const AdminHeader = () => {
         </div>
 
         {/**drop down section */}
+        <AnimatePresence>
+          {isHover && (
+            <motion.div
+              //--------- handles close after hover and
+              // -------- resets auto close timer during hover
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseOut}
+              {...fadeInUp}
+              className="absolute top-20 right-0 bg-secondary shadow-md flex flex-col items-start justify-start
+              w-64 px-4 py-2 gap-4 rounded-md z-50"
+            >
+              {Menus &&
+                Menus.map((menu) => (
+                  <React.Fragment key={menu.id}>
+                    {menu.isAdmin ? (
+                      <Link className="py-2 px-1 font-semibold hover:text-heroSecodary ">
+                        {menu.menu}
+                      </Link>
+                    ) : (
+                      <Link className="py-2 px-1 font-semibold hover:text-heroSecodary ">
+                        {menu.menu}
+                      </Link>
+                    )}
+                  </React.Fragment>
+                ))}
 
-        <div
-          className="absolute top-12 right-0 bg-secondary shadow-md flex flex-col items-start justify-start
-        w-64"
-        >
-          {Menus &&
-            Menus.map((menu) => {
-              <React.Fragment>
-                {menu.isAdmin ? (
-                  <Link key={menu.id}>{menu.menu}</Link>
-                ) : (
-                  <Link key={menu.id}>{menu.menu}</Link>
-                )}
-              </React.Fragment>;
-            })}
-        </div>
+              <button
+                type="button"
+                onClick={() => signOutUser(queryClient)}
+                className="px-4 py-2 w-full rounded-md bg-textPrimary text-primary
+          active:scale-95 transition-all ease-in-out duration-300"
+              >
+                Sign Out
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
