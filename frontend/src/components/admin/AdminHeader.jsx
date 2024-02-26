@@ -78,7 +78,7 @@ const AdminHeader = () => {
           //--------- handles auto close without options hover and
           // -------- handles display after hover
           onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseOut} //handling thr timer part
+          onMouseLeave={handleMouseOut}
           className=" w-16 h-16 rounded-full flex items-center p-1 justify-center relative
          bg-gradient-to-b from-bg-heroPrimary to bg-heroSecodary"
         >
