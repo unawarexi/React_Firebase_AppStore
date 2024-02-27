@@ -32,7 +32,7 @@ const App = () => {
 
               {/* === ADMIN ROUTE === */}
               <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<AdminHome />} />
+                <Route path="home" element={<AdminHome />} />
                 <Route path="apps" element={<AdminApps />} />
                 <Route path="users" element={<AdminUsers />} />
               </Route>

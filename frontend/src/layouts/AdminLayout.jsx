@@ -34,18 +34,18 @@ const AdminLayout = () => {
           className={({ isActive }) =>
             `text-lg font-semibold ${isActive && "text-heroPrimary"}`
           }
-          to={"/admin/apps"}
-        >
-          Apps
+          to={"/admin/home"}
+        >  Dashboard
+          
         </NavLink>
         <NavLink
           className={({ isActive }) =>
             `text-lg font-semibold ${isActive && "text-heroPrimary"}`
           }
-          to={"/admin"}
+          to={"/admin/apps"}
         >
           {" "}
-          Dashboard
+          Apps
         </NavLink>
         <NavLink
           className={({ isActive }) =>
