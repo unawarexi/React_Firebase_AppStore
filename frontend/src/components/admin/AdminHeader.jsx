@@ -1,17 +1,9 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-
-import useUser from "../../hooks/user/UseUser";
-
-import { useQueryClient } from "react-query";
+import { Link } from "react-router-dom";
 import UserProfileContainer from "../UserProfileContainer";
 import { Logo } from "../../assets/image";
 
 const AdminHeader = () => {
-  const { data: user, isLoading: userLoading, isError, refetch } = useUser();
-  const queryClient = useQueryClient();
-
-
   return (
     <div className="w-full flex items-center justify-between">
       {/**logo */}

@@ -1,7 +1,14 @@
 import React, { Suspense, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import { AdminHome, Authentication, Home, UserProfile } from "./Pages/ExpPages";
+import {
+  AdminApps,
+  AdminHome,
+  AdminUsers,
+  Authentication,
+  Home,
+  UserProfile,
+} from "./Pages/ExpPages";
 import { AdminLayout, AuthLayout, Layouts } from "./layouts/ExpLayouts";
 import { auth } from "./config/Firebase.config";
 
@@ -17,7 +24,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Suspense fallback={<div>Loading...</div>}>
-        <div >
+        <div>
           <Routes>
             <Route element={<Layouts />}>
               <Route path="/" element={<Home />} />
@@ -26,6 +33,8 @@ const App = () => {
               {/* === ADMIN ROUTE === */}
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminHome />} />
+                <Route path="apps" element={<AdminApps />} />
+                <Route path="users" element={<AdminUsers />} />
               </Route>
 
               {/* === AUTHENTICATION ROUTE === */}
