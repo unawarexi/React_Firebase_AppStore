@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { InputContainer } from "../../components/ExpComp";
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import { toast } from "react-toastify";
+import { saveAppDataToCloud } from "../../api/UserApi";
 
 const AdminNewApps = () => {
   const [Title, setTitle] = useState("");
@@ -34,7 +36,7 @@ const AdminNewApps = () => {
     setBanners(updatedBanners);
   };
 
-  const saveAllField = () => {
+  const saveAllField = async () => {
     const id = `${Date.now()}`;
     const _doc = {
       _id: id,
@@ -48,7 +50,10 @@ const AdminNewApps = () => {
       ShortDescription,
     };
 
-    console.log(_doc)
+    await saveAppDataToCloud(_doc).then((appData) => {
+      toast.success("Data saved in the cloud");
+      console.log(appData);
+    });
   };
 
   const clearAllField = () => {};
@@ -142,14 +147,16 @@ const AdminNewApps = () => {
       <div className="w-full flex items-center justify-end gap-20">
         <button
           type="button"
-          className="border border-gray-600 px-8 py-2 rounded-md hover:border-none hover:bg-gradient-to-br hover:from-heroPrimary cursor-pointer hover:text-black transition-all ease-in-out duration-200 active:scale-95"
+          className="border border-gray-600 px-8 py-2 rounded-md hover:border-none hover:bg-gradient-to-br hover:from-heroPrimary cursor-pointer
+           hover:text-black transition-all ease-in-out duration-200 active:scale-95"
           onClick={saveAllField}
         >
           Add
         </button>
         <button
           type="button"
-          className="border border-gray-600 px-8 py-2 rounded-md hover:border-none hover:bg-gradient-to-br hover:from-heroPrimary cursor-pointer hover:text-black transition-all ease-in-out duration-200 active:scale-95"
+          className="border border-gray-600 px-8 py-2 rounded-md hover:border-none hover:bg-gradient-to-br hover:from-heroPrimary cursor-pointer
+           hover:text-black transition-all ease-in-out duration-200 active:scale-95"
           onClick={clearAllField}
         >
           Clear

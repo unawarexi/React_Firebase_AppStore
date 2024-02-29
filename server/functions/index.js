@@ -45,9 +45,10 @@ exports.validateUserJWTToken = functions.https.onRequest(
             userData.role = "member";
             await userRef.set(userData);
             return response.status(200).json({ Success: true, user: userData });
-
           } else {
-            return response.status(200).json({ Success: true, user: doc.data() });
+            return response
+              .status(200)
+              .json({ Success: true, user: doc.data() });
           }
         }
       } catch (error) {
@@ -59,3 +60,26 @@ exports.validateUserJWTToken = functions.https.onRequest(
     });
   }
 );
+
+// function to save app data to cloud
+exports.createNewApp = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    try {
+      const appData = req.body;
+      const docRef = db.collection("Apps").doc(req.body._id);
+      
+      // Set data to the document
+      await docRef.set(appData);
+
+      // Retrieve data from the cloud
+      const appDetailSnapshot = await docRef.get();
+      const appDetailData = appDetailSnapshot.data(); 
+      
+      // Respond with created document data
+      res.status(201).json({ _id: docRef.id, appData: appDetailData });
+    } catch (error) {
+      console.error("Error creating post:", error);
+      return res.status(500).json({ error: "Could not create post" });
+    }
+  });
+});

@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { auth } from "../config/Firebase.config";
 import { baseURL } from "../utils/Helpers";
 
@@ -26,7 +27,7 @@ export const getAuthenticatedUser = () => {
               }
             })
             .then((data) => {
-              resolve( data?.user);
+              resolve(data?.user);
             });
         });
       } else {
@@ -34,7 +35,27 @@ export const getAuthenticatedUser = () => {
       }
 
       //  unsubscribe listener
-      unsubscribe()
+      unsubscribe();
     });
   });
+};
+
+
+export const saveAppDataToCloud = async (appData) => {
+  try {
+    const res = await fetch(`${baseURL}/createNewApp`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(appData),
+    });
+    if (res.ok) {
+      toast.error("Try to create an App");
+    }
+    const resData = await res.json();
+    return resData;
+  } catch (error) {
+    toast.error(`Error ${error}`);
+  }
 };
