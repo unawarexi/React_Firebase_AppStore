@@ -40,7 +40,6 @@ export const getAuthenticatedUser = () => {
   });
 };
 
-
 export const saveAppDataToCloud = async (appData) => {
   try {
     const res = await fetch(`${baseURL}/createNewApp`, {
@@ -50,11 +49,27 @@ export const saveAppDataToCloud = async (appData) => {
       },
       body: JSON.stringify(appData),
     });
-    if (res.ok) {
+    if (!res.ok) {
       toast.error("Try to create an App");
     }
     const resData = await res.json();
     return resData;
+  } catch (error) {
+    toast.error(`Error ${error}`);
+  }
+};
+
+export const getAllAppsFromCloud = async (apps) => {
+  try {
+    const res = await fetch(`${baseURL}/getAllApps`);
+
+    if (!res.ok) {
+      toast.error("Try to create an App");
+    }
+
+    const apps = await res.json();
+    return apps;
+    
   } catch (error) {
     toast.error(`Error ${error}`);
   }

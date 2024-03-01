@@ -67,19 +67,48 @@ exports.createNewApp = functions.https.onRequest(async (req, res) => {
     try {
       const appData = req.body;
       const docRef = db.collection("Apps").doc(req.body._id);
-      
+
       // Set data to the document
       await docRef.set(appData);
 
       // Retrieve data from the cloud
       const appDetailSnapshot = await docRef.get();
-      const appDetailData = appDetailSnapshot.data(); 
-      
+      const appDetailData = appDetailSnapshot.data();
+
       // Respond with created document data
       res.status(201).json({ _id: docRef.id, appData: appDetailData });
     } catch (error) {
       console.error("Error creating post:", error);
       return res.status(500).json({ error: "Could not create post" });
+    }
+  });
+});
+
+// function get all apps from collection
+exports.getAllApps = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    try {
+      // Implement your logic to read apps
+      const apps = [];
+      const unsubscribe = db
+        .collection("Apps")
+        .orderBy("timestamp", "desc")
+        .onSnapshot((snapshot) => {
+          apps.length = 0; // Clear existing array
+          snapshot.forEach((doc) => {
+            apps.push(doc.data());
+          });
+          // Return apps sorted by timestamp in descending order
+          res.status(200).json(apps);
+        });
+
+      // Cleanup function to unsubscribe from snapshot listener
+      return () => {
+        unsubscribe();
+      };
+    } catch (error) {
+      console.error("Error reading apps:", error);
+      return res.status(500).json({ error: "Could not read apps" });
     }
   });
 });

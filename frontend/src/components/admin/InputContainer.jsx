@@ -1,20 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 
-const InputContainer = ({ onChangeText, placeholder }) => {
-  const [value, setValue] = useState("");
-
+const InputContainer = ({ onChangeText, placeholder, stateValue }) => {
   const handleChange = (e) => {
-    setValue(e.target.value)
-    onChangeText(e.target.value)
-
-  }
+    onChangeText(e.target.value);
+  };
   return (
     <input
-     className="w-full h-12 rounded-md outline-none border border-third shadow-md bg-secondary
+      className="w-full h-12 rounded-md outline-none border border-third shadow-md bg-secondary
       px-4 text-lg font-semibold font-sans "
       type="text"
       placeholder={placeholder}
-      value={value}
+      value={stateValue}
       onChange={handleChange}
     />
   );

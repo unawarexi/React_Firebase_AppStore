@@ -3,6 +3,7 @@ import { InputContainer } from "../../components/ExpComp";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import { saveAppDataToCloud } from "../../api/UserApi";
+import { serverTimestamp } from "firebase/firestore";
 
 const AdminNewApps = () => {
   const [Title, setTitle] = useState("");
@@ -38,25 +39,38 @@ const AdminNewApps = () => {
 
   const saveAllField = async () => {
     const id = `${Date.now()}`;
+    const timestamp = serverTimestamp()
     const _doc = {
       _id: id,
       Title,
       Company,
+      AppIcon,
       Reviews,
       TotalReviews,
       Download,
       Cover,
       Banners,
       ShortDescription,
+      timestamp,
     };
 
     await saveAppDataToCloud(_doc).then((appData) => {
+      clearAllField();
       toast.success("Data saved in the cloud");
-      console.log(appData);
     });
   };
 
-  const clearAllField = () => {};
+  const clearAllField = () => {
+    setTitle("");
+    setCompany("");
+    setAppIcon("");
+    setReviews("");
+    setTotalReviews("");
+    setDownload("");
+    setCover("");
+    setBanners([]);
+    setShortDescription("");
+  };
 
   return (
     <div className="w-full flex flex-col items-center justify-start px-2 py-3 gap-4">
@@ -64,12 +78,14 @@ const AdminNewApps = () => {
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="App title"
         onChangeText={(data) => setTitle(data)}
+        stateValue = {Title}
       />
 
       <InputContainer
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="cover image URL"
         onChangeText={(data) => setCover(data)}
+        stateValue = {Cover}
       />
 
       <div
@@ -110,26 +126,31 @@ const AdminNewApps = () => {
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="Company Name"
         onChangeText={(data) => setCompany(data)}
+        stateValue = {Company}
       />
       <InputContainer
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="App Icon Url"
         onChangeText={(data) => setAppIcon(data)}
+        stateValue = {AppIcon}
       />
       <InputContainer
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="App Reviews"
         onChangeText={(data) => setReviews(data)}
+        stateValue = {Reviews}
       />
       <InputContainer
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="App Total Reviews"
         onChangeText={(data) => setTotalReviews(data)}
+        stateValue = {TotalReviews}
       />
       <InputContainer
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="App Total downloads"
         onChangeText={(data) => setDownload(data)}
+        stateValue = {Download}
       />
 
       <textarea
