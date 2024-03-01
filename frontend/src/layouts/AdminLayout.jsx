@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
-import { AdminHeader } from "../components/ExpComp";
+import { AdminHeader, MainLoader } from "../components/ExpComp";
 import useUser from "../hooks/user/UseUser";
 import { FaHouse, FaHouseChimney } from "react-icons/fa6";
 
@@ -16,7 +16,7 @@ const AdminLayout = () => {
   }, [userLoading, user]);
 
   if (userLoading) {
-    return <div>Loaading...</div>;
+    return <MainLoader />;
   }
 
   return (
