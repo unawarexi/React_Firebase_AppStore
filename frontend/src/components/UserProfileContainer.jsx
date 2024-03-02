@@ -17,9 +17,11 @@ import { useQueryClient } from "react-query";
 
 //assests
 import { Avatar } from "../assets/image";
-
 //utils
 import { Menus, signOutUser } from "../utils/Helpers";
+
+//spinner
+import PuffLoader from "react-spinners/PuffLoader"
 
 
 
@@ -27,6 +29,10 @@ import { Menus, signOutUser } from "../utils/Helpers";
 const UserProfileContainer = () => {
   const { data: user, isLoading: userLoading, isError, refetch } = useUser();
   const queryClient = useQueryClient();
+
+  if (userLoading) {
+    return <PuffLoader color="#ffbb0b" size = {40} />
+  }
 
   
   const [isHover, setisHover] = useState(false);
