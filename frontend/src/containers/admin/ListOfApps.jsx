@@ -1,15 +1,30 @@
-import React from 'react'
-import useApps from '../../hooks/apps/UseApps'
+import React from "react";
+import useApps from "../../hooks/apps/UseApps";
+import PuffLoader from "react-spinners/PuffLoader";
+import { AdminAppListCart } from "../../components/ExpComp";
 
 const ListOfApps = () => {
-  const {data, isLoading, isError, refetch }  = useApps();
+  const { data: apps, isLoading, isError, refetch } = useApps();
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <PuffLoader color="#ffbb0b" size={40} />;
   }
   return (
-    <div>ListOfApps</div>
-  )
-}
+    <div className="w-full h-auto grid grid-cols-1 lg:grid-cols-2 gap-4 border border-red-500 p-4">
+      {apps?.length > 0 && apps ? (
+        <React.Fragment>
+          {apps?.map((app) => (
+            <AdminAppListCart key={app?._id} data = {app} />
 
-export default ListOfApps
+          ))}
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <p>No Data</p>
+        </React.Fragment>
+      )}
+    </div>
+  );
+};
+
+export default ListOfApps;
