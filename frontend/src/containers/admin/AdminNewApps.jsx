@@ -4,6 +4,7 @@ import { FaMinus, FaPlus } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import { saveAppDataToCloud } from "../../api/UserApi";
 import { serverTimestamp } from "firebase/firestore";
+import useUser from "../../hooks/user/UseUser";
 
 const AdminNewApps = () => {
   const [Title, setTitle] = useState("");
@@ -15,6 +16,9 @@ const AdminNewApps = () => {
   const [Cover, setCover] = useState("");
   const [Banners, setBanners] = useState([]);
   const [ShortDescription, setShortDescription] = useState("");
+
+
+  const {refetch : refetchAllApps} =  useUser()
 
   const bannerHnadleChange = (id, value) => {
     const updated = Banners.map((item) =>
@@ -57,6 +61,7 @@ const AdminNewApps = () => {
     await saveAppDataToCloud(_doc).then((appData) => {
       clearAllField();
       toast.success("Data saved in the cloud");
+      refetchAllApps();
     });
   };
 
