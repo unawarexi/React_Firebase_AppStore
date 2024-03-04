@@ -112,3 +112,22 @@ exports.getAllApps = functions.https.onRequest(async (req, res) => {
     }
   });
 });
+
+// function to delete app from cloud
+
+exports.deleteAnApp = functions.https.onRequest(async (req, res) => {
+  cors(req, res, async () => {
+    try {
+      const { id } = req.query || req.body; // Try to retrieve _id from both query and body
+      if (!id) {
+        return res.status(400).json({ error: "app id is missing" });
+      }
+
+      await db.collection("Apps").doc(id).delete();
+      return res.status(200).json({ message: "App Deleted" });
+    } catch (error) {
+      console.error("Error deleting app:", error);
+      return res.status(500).json({ error: "Could not delete app" });
+    }
+  });
+});

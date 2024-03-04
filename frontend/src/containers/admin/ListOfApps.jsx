@@ -10,7 +10,7 @@ const ListOfApps = () => {
     return <PuffLoader color="#ffbb0b" size={40} />;
   }
   return (
-    <div className="w-full h-auto grid grid-cols-1 lg:grid-cols-2 gap-4 border border-red-500 p-4">
+    <div className="w-full h-auto grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
       {apps?.length > 0 && apps ? (
         <React.Fragment>
           {apps?.map((app) => (

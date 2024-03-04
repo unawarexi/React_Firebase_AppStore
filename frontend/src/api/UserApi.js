@@ -69,8 +69,29 @@ export const getAllAppsFromCloud = async (apps) => {
 
     const apps = await res.json();
     return apps;
-    
   } catch (error) {
     toast.error(`Error ${error}`);
+  }
+};
+
+export const deleteAppFromCloud = async (id) => {
+  try {
+    const response = await fetch(`${baseURL}/deleteAnApp?id=${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        // Add any other headers if necessary (e.g., authorization token)
+      },
+    });
+    if (response.ok) {
+      toast.success("deleted successfully");
+      return true;
+    } else {
+      toast.error("Failed to delete App");
+    }
+  } catch (error) {
+    // Handle network errors or other exceptions
+    toast.error(`Error : ${error}`);
+    return false;
   }
 };
