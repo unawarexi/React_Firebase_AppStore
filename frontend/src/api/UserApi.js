@@ -40,6 +40,24 @@ export const getAuthenticatedUser = () => {
   });
 };
 
+
+
+export const getAllUsersFromCloud = async (getusers) => {
+  try {
+    const res = await fetch(`${baseURL}/getAllUsers`);
+
+    if (!res.ok) {
+      toast.error("Try adding users");
+    }
+
+    const getusers = await res.json();
+    return getusers;
+  } catch (error) {
+    toast.error(`Error ${error}`);
+  }
+};
+
+
 export const saveAppDataToCloud = async (appData) => {
   try {
     const res = await fetch(`${baseURL}/createNewApp`, {
