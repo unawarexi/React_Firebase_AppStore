@@ -61,6 +61,27 @@ exports.validateUserJWTToken = functions.https.onRequest(
   }
 );
 
+//function to retrieve users from cloud
+exports.getAllUsers = functions.https.onRequest(async (request, response) => {
+  cors(request, response, async () => {
+    try {
+      const usersSnapshot = await db.collection("users").get();
+      const getusers = [];
+
+      usersSnapshot.forEach((doc) => {
+        getusers.push({
+          data: doc.data(),
+        });
+      });
+
+      return response.status(200).json(getusers);
+    } catch (error) {
+      console.error("Error retrieving users:", error);
+      return response.status(500).json({ error: "Could not retrieve users" });
+    }
+  });
+});
+
 // function to save app data to cloud
 exports.createNewApp = functions.https.onRequest(async (req, res) => {
   cors(req, res, async () => {
