@@ -7,8 +7,8 @@ const getUsers = () => {
     "getusers",
     async () => {
       try {
-        const getusers = await getAllUsersFromCloud();
-        return getusers;
+        const users = await getAllUsersFromCloud();
+        return users;
       } catch (error) {
         console.log(error);
         toast.error(`Error : ${error}`);

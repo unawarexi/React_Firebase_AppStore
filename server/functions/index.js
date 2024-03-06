@@ -66,15 +66,13 @@ exports.getAllUsers = functions.https.onRequest(async (request, response) => {
   cors(request, response, async () => {
     try {
       const usersSnapshot = await db.collection("users").get();
-      const getusers = [];
+      const users = [];
 
       usersSnapshot.forEach((doc) => {
-        getusers.push({
-          data: doc.data(),
-        });
+        users.push(doc.data());
       });
 
-      return response.status(200).json(getusers);
+      return response.status(200).json(users);
     } catch (error) {
       console.error("Error retrieving users:", error);
       return response.status(500).json({ error: "Could not retrieve users" });

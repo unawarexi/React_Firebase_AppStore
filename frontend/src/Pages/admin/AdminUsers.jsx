@@ -10,11 +10,9 @@ const AdminUsers = () => {
   }
   return (
     <div className="w-full flex flex-wrap items-center justify-evenly gap-4">
-      {getusers && getusers?.length > 0 ? (
+      {getusers?.length > 0 && getusers ? (
         <React.Fragment>
-          {getusers.map((users) => (
-            <UserListCard key={users?.uid} data={users} />
-          ))}
+          {getusers.map((user) => (<UserListCard key={user?.uid} data={user} />))}
         </React.Fragment>
       ) : (
         <React.Fragment>

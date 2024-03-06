@@ -42,16 +42,19 @@ export const getAuthenticatedUser = () => {
 
 
 
-export const getAllUsersFromCloud = async (getusers) => {
+export const getAllUsersFromCloud = async () => {
   try {
     const res = await fetch(`${baseURL}/getAllUsers`);
+    console.log(res)
 
     if (!res.ok) {
       toast.error("Try adding users");
+    
     }
 
-    const getusers = await res.json();
-    return getusers;
+    const users = await res.json();
+    return users;
+
   } catch (error) {
     toast.error(`Error ${error}`);
   }
