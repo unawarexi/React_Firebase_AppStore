@@ -1,17 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar } from "../../assets/image";
 import { updateUserDataToCloud } from "../../api/UserApi";
 import useUser from "../../hooks/user/UseUser";
 import { toast } from "react-toastify";
 
 const UserListCard = ({ data }) => {
- const {data: users, isLoading, isError, refetch : refetchAllUser} = useUser()
+
+   
+
+  const {
+    data : users,
+    isLoading,
+    isError,
+    refetch,
+  } = useUser();
 
   const updateUserRole = async (role) => {
-    await updateUserDataToCloud({ _id: users?.uid, role: role }).then((data) => {
-      toast.success("user Role updated");
-      refetchAllUser();
-    });
+    await updateUserDataToCloud({ _id: data?.uid, role: role }).then(
+      (data) => {
+        toast.success("user Role updated");
+        refetch();
+      }
+    );
   };
 
   return (
@@ -33,7 +43,8 @@ const UserListCard = ({ data }) => {
           Mark as member
         </button>
       ) : (
-        <button className="text-sm font-semibold px-2 py-1 bg-zinc-700 rounded-md cursor-pointer">
+        <button  onClick={() => updateUserRole("admin")}
+        className="text-sm font-semibold px-2 py-1 bg-zinc-700 rounded-md cursor-pointer">
           Mark as Admin
         </button>
       )}
