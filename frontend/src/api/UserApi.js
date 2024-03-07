@@ -116,3 +116,24 @@ export const deleteAppFromCloud = async (id) => {
     return false;
   }
 };
+
+
+
+export const updateUserDataToCloud = async (data) => {
+  try {
+    const res = await fetch(`${baseURL}/updateTheUser`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      toast.error("Try to create an update");
+    }
+    const resData = await res.json();
+    return resData;
+  } catch (error) {
+    toast.error(`Error ${error}`);
+  }
+};

@@ -150,3 +150,20 @@ exports.deleteAnApp = functions.https.onRequest(async (req, res) => {
     }
   });
 });
+
+
+// Function to update the user role
+exports.updateTheUser = functions.https.onRequest(async(request, response) => {
+  cors(request, response, async () => {
+    try {
+      const {_id, ...data} = request.body
+      await db.collection("users").doc(_id).update(data)
+      return response.status(200).json({message : "User Updated"})
+      
+    } catch (error) {
+      console.error("Error Updating User:", error);
+      return response.status(500).json({ error: "Could not update User" });
+      
+    }
+  })
+})
