@@ -1,9 +1,18 @@
-import React from 'react'
+import React from "react";
+import { Outlet } from "react-router-dom";
+import { Header } from "../components/ExpComp";
 
 const RightLayoutContainer = () => {
   return (
-    <div>RightLayoutContainer</div>
-  )
-}
+    <div className="flex-1">
+      {/* {header section} */}
 
-export default RightLayoutContainer
+      <Header />
+       <section className="w-full h-[calc(100vh-80px)]">
+        <Outlet></Outlet>
+      </section>
+    </div>
+  );
+};
+
+export default RightLayoutContainer;
