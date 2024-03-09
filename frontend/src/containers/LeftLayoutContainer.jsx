@@ -5,24 +5,28 @@ import { ClientMenus } from "../utils/Helpers";
 import { ClientMenuListsItem } from "../components/ExpComp";
 
 const LeftLayoutContainer = () => {
-  const [isClose, setisClose] = useState(true);
+  const [isClose, setIsClose] = useState(true);
+
+  const toggleClose = () => {
+    setIsClose(!isClose);
+  };
+
   return (
     <div
       className={`${
         isClose ? "w-20 px-3" : "w-80"
-      } w-80 h-full py-3 relative bg-third border-r border-secondary
-      duration-200 flex flex-col items-center justify-start`}
+      } h-full py-3 relative bg-third border-r border-secondary
+        duration-200 flex flex-col items-center justify-start`}
     >
-      {/* {absolute action button} */}
-
+      {/* Absolute action button */}
       <div
-        onClick={() => setisClose(!isClose)}
+        onClick={toggleClose}
         className="absolute -right-3 px-1 py-4 bg-gradient-to-br from-heroPrimary to-heroSecodary
-         rounded-md cursor-pointer group"
+           rounded-md cursor-pointer group"
       >
         <FaChevronRight
           className={`text-sm text-white duration-200 ${
-            !isClose && "rotate-[540deg]"
+            !isClose ? "rotate-[540deg]" : ""
           }`}
         />
       </div>
