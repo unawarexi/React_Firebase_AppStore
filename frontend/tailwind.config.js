@@ -10,7 +10,7 @@ export default {
         primary: "#1C1C1B",
         secondary: "#272727",
         third : "#181817",
-        textPrimary : "#3B5B5B",
+        textPrimary : "#FFFFFF",
         textSecondary: "#FDFDFD",
         heroPrimary : "#FF9E01",
         heroSecodary : "#F77801"
