@@ -10,7 +10,7 @@ import { FaChevronDown } from "react-icons/fa6";
 
 //animation
 import { motion, AnimatePresence } from "framer-motion";
-import {fadeInUp} from "../animation/Animations"
+import { fadeInUp } from "../animation/Animations";
 
 //react-queries
 import { useQueryClient } from "react-query";
@@ -21,20 +21,16 @@ import { Avatar } from "../assets/image";
 import { Menus, signOutUser } from "../utils/Helpers";
 
 //spinner
-import PuffLoader from "react-spinners/PuffLoader"
-
-
-
+import PuffLoader from "react-spinners/PuffLoader";
 
 const UserProfileContainer = () => {
   const { data: user, isLoading: userLoading, isError, refetch } = useUser();
   const queryClient = useQueryClient();
 
   if (userLoading) {
-    return <PuffLoader color="#ffbb0b" size = {40} />
+    return <PuffLoader color="#ffbb0b" size={40} />;
   }
 
-  
   const [isHover, setisHover] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
 
@@ -123,11 +119,17 @@ const UserProfileContainer = () => {
               Menus.map((menu) => (
                 <React.Fragment key={menu.id}>
                   {menu.isAdmin ? (
-                    <Link className="py-2 px-1 font-semibold hover:text-heroSecodary ">
+                    <Link
+                      to={menu.uri}
+                      className="py-2 px-1 font-semibold hover:text-heroSecodary "
+                    >
                       {menu.menu}
                     </Link>
                   ) : (
-                    <Link className="py-2 px-1 font-semibold hover:text-heroSecodary ">
+                    <Link
+                      to={menu.uri}
+                      className="py-2 px-1 font-semibold hover:text-heroSecodary "
+                    >
                       {menu.menu}
                     </Link>
                   )}
