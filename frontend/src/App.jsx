@@ -5,6 +5,7 @@ import {
   AdminApps,
   AdminHome,
   AdminUsers,
+  AppDetailPage,
   Authentication,
   Home,
   UserProfile,
@@ -26,9 +27,13 @@ const App = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <div>
           <Routes>
+            {/* {====== CLIENT USER ROUTE ======= } */}
             <Route element={<Layouts />}>
               <Route path="/" element={<Home />} />
+              <Route path="/detail/:appid" element={<AppDetailPage />} />
               <Route path="/profile/:uid" element={<UserProfile />} />
+
+
 
               {/* === ADMIN ROUTE === */}
               <Route path="/admin" element={<AdminLayout />}>
@@ -36,6 +41,8 @@ const App = () => {
                 <Route path="apps" element={<AdminApps />} />
                 <Route path="users" element={<AdminUsers />} />
               </Route>
+
+
 
               {/* === AUTHENTICATION ROUTE === */}
               <Route path="/auth/*" element={<AuthLayout />}>
