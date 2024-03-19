@@ -6,6 +6,8 @@ import { saveAppDataToCloud } from "../../api/UserApi";
 import { serverTimestamp } from "firebase/firestore";
 import useUser from "../../hooks/user/UseUser";
 
+import ResponsiveComponent from "../../hooks/responsive/useResponsive";
+
 const AdminNewApps = () => {
   const [Title, setTitle] = useState("");
   const [Company, setCompany] = useState("");
@@ -15,10 +17,10 @@ const AdminNewApps = () => {
   const [Download, setDownload] = useState("");
   const [Cover, setCover] = useState("");
   const [Banners, setBanners] = useState([]);
+  const [CoverTrailer, setCoverTrailer] = useState("");
   const [ShortDescription, setShortDescription] = useState("");
 
-
-  const {refetch : refetchAllApps} =  useUser()
+  const { refetch: refetchAllApps } = useUser();
 
   const bannerHnadleChange = (id, value) => {
     const updated = Banners.map((item) =>
@@ -43,7 +45,7 @@ const AdminNewApps = () => {
 
   const saveAllField = async () => {
     const id = `${Date.now()}`;
-    const timestamp = serverTimestamp()
+    const timestamp = serverTimestamp();
     const _doc = {
       _id: id,
       Title,
@@ -54,6 +56,7 @@ const AdminNewApps = () => {
       Download,
       Cover,
       Banners,
+      CoverTrailer,
       ShortDescription,
       timestamp,
     };
@@ -74,23 +77,26 @@ const AdminNewApps = () => {
     setDownload("");
     setCover("");
     setBanners([]);
+    setCoverTrailer("")
     setShortDescription("");
   };
+
+  const width = ResponsiveComponent();
 
   return (
     <div className="w-full flex flex-col items-center justify-start px-2 py-3 gap-4">
       <InputContainer
-        className="w-full flex flex-col items-center justify-start px-4 py-3"
+        className="w-full flex flex-col items-center justify-start px-4 py-3 "
         placeholder="App title"
         onChangeText={(data) => setTitle(data)}
-        stateValue = {Title}
+        stateValue={Title}
       />
 
       <InputContainer
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="cover image URL"
         onChangeText={(data) => setCover(data)}
-        stateValue = {Cover}
+        stateValue={Cover}
       />
 
       <div
@@ -103,8 +109,11 @@ const AdminNewApps = () => {
             key={input.id}
           >
             <input
-              className="w-full h-12 rounded-md outline-none border border-third shadow-md bg-secondary
-            px-4 text-lg font-semibold font-sans "
+              className={`${
+                width <= 768
+                  ? " text-sm font-normal w-full h-12 rounded-md outline-none border border-third shadow-md bg-secondary px-4  font-sans "
+                  : "w-full h-12 rounded-md outline-none border border-third shadow-md bg-secondary px-4 text-lg font-semibold font-sans "
+              }`}
               type="text"
               placeholder={"Banner image URL"}
               value={input.uri}
@@ -131,31 +140,37 @@ const AdminNewApps = () => {
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="Company Name"
         onChangeText={(data) => setCompany(data)}
-        stateValue = {Company}
+        stateValue={Company}
       />
       <InputContainer
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="App Icon Url"
         onChangeText={(data) => setAppIcon(data)}
-        stateValue = {AppIcon}
+        stateValue={AppIcon}
+      />
+      <InputContainer
+        className="w-full flex flex-col items-center justify-start px-4 py-3"
+        placeholder="App Trailer Url"
+        onChangeText={(data) => setCoverTrailer(data)}
+        stateValue={CoverTrailer}
       />
       <InputContainer
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="App Reviews"
         onChangeText={(data) => setReviews(data)}
-        stateValue = {Reviews}
+        stateValue={Reviews}
       />
       <InputContainer
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="App Total Reviews"
         onChangeText={(data) => setTotalReviews(data)}
-        stateValue = {TotalReviews}
+        stateValue={TotalReviews}
       />
       <InputContainer
         className="w-full flex flex-col items-center justify-start px-4 py-3"
         placeholder="App Total downloads"
         onChangeText={(data) => setDownload(data)}
-        stateValue = {Download}
+        stateValue={Download}
       />
 
       <textarea
@@ -166,8 +181,11 @@ const AdminNewApps = () => {
         value={ShortDescription}
         onChange={(e) => setShortDescription(e.target.value)}
         placeholder="Description here"
-        className="w-full roundd-md outline-none border border-third shadow-md bg-secondary
-      px-4 text-lg font-semibold font-sans "
+        className={`${
+          width <= 768
+            ? " text-sm font-normal w-full rounded-md outline-none border border-third shadow-md bg-secondary px-4 pt-4 font-sans"
+            : "w-full rounded-md outline-none border border-third shadow-md bg-secondary px-4 text-lg font-semibold font-sans"
+        }`}
       />
 
       <div className="w-full flex items-center justify-end gap-20">

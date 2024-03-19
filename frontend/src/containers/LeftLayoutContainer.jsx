@@ -3,6 +3,7 @@ import { FaChevronDown, FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import { Flag, Logo } from "../assets/image";
 import { ClientMenus } from "../utils/Helpers";
 import { ClientMenuListsItem } from "../components/ExpComp";
+import ResponsiveComponent from "../hooks/responsive/useResponsive";
 
 const LeftLayoutContainer = () => {
   const [isClose, setIsClose] = useState(true);
@@ -11,12 +12,13 @@ const LeftLayoutContainer = () => {
     setIsClose(!isClose);
   };
 
+  const width = ResponsiveComponent(); // Access the width returned by ResponsiveComponent
+
   return (
     <div
-      className={`${
-        isClose ? "w-20 px-3" : "w-80"
-      } h-full py-3 relative bg-third border-r border-secondary
-        duration-200 flex flex-col items-center justify-start`}
+      className={`${isClose ? "w-20 px-3" : "w-80"} ${width <= 900  && isClose ? "hidden" : ""}
+      h-auto py-3 relative bg-third border-r border-secondary
+        duration-200 flex flex-col items-center justify-start `}
     >
       {/* Absolute action button */}
       <div

@@ -44,7 +44,7 @@ const UserProfileContainer = () => {
     // Set a new timeout to close the dropdown
     const id = setTimeout(() => {
       setisHover(false);
-    }, 3000);
+    }, 1000);
     // Store the timeout ID for later reference
     setTimeoutId(id);
   };
@@ -57,7 +57,7 @@ const UserProfileContainer = () => {
   }, [timeoutId]);
 
   return (
-    <div className="flex justify-center items-center gap-4 cursor-pointer relative">
+    <div className="flex justify-center items-center gap-4 cursor-pointer relative px-40">
       {/**name content */}
       <div className="flex flex-col items-start justify-start gap-1">
         <h2 className="text-lg font-bold text-heroPrimary capitalize">
@@ -112,8 +112,8 @@ const UserProfileContainer = () => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseOut}
             {...fadeInUp}
-            className="absolute top-20 right-0 bg-secondary shadow-md flex flex-col items-start justify-start
-          w-64 px-4 py-2 gap-4 rounded-md z-50"
+            className="absolute top-20  bg-secondary shadow-md flex flex-col items-start justify-start
+          w-64 px-4 py-2 gap-4 rounded-md z-[999]"
           >
             {Menus &&
               Menus.map((menu) => (

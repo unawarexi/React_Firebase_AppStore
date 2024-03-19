@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa6";
 import { AnimatePresence, motion } from "framer-motion";
 import useUser from "../../hooks/user/UseUser";
@@ -7,24 +7,27 @@ import { deleteAppFromCloud } from "../../api/UserApi";
 import { toast } from "react-toastify";
 import useApps from "../../hooks/apps/UseApps";
 
+import ResponsiveComponent from "../../hooks/responsive/useResponsive";
+
 const AdminAppListCart = ({ data }) => {
   const { data: user, isLoading, isError, refetch } = useUser();
-  const { data: apps,  refetch : refetchApps } = useApps();
+  const { data: apps, refetch: refetchApps } = useApps();
 
   const [isDelete, setisDelete] = useState(false);
 
   const removeAnApp = async () => {
     await deleteAppFromCloud(data?._id).then(() => {
-      toast.success("App Removed")
-      refetchApps()
-    })
+      toast.success("App Removed");
+      refetchApps();
+    });
+  };
 
-  }
+  const width = ResponsiveComponent();
 
   return (
     <div
       className="border-2 flex  border-heroPrimary rounded-md px-3 py-2 items-center justify-start
-     relative gap-3 w-full h-[100px]"
+     relative gap-3 w-[80%] h-[100px]"
     >
       <img
         src={data?.AppIcon}
@@ -48,19 +51,20 @@ const AdminAppListCart = ({ data }) => {
 
       <AnimatePresence>
         {isDelete && (
-          <motion.div {...smoothPopIn}
+          <motion.div
+            {...smoothPopIn}
             className="fixed inset-0 backdrop-blur-md flex items-center justify-center z-50"
           >
             <div
               className="border rounded-md border-heroPrimary p-4 flex flex-col items-center
               justify-center gap-4"
             >
-              <h2 className=" font-medium text-2xl">
+              <h2 className={`${width <= 768 ? " text-sm font-normal" : "font-medium text-2xl"}`}>
                 Are you sure you want to Delete?
               </h2>
               <div className="flex items-center justify-center gap-2">
                 <button
-                onClick={removeAnApp()}
+                  onClick={removeAnApp}
                   type="button"
                   className=" outline-none px-6 py-2 rounded-md text-black bg-red-400 hover:bg-red-600
                    transition-all ease-in-out duration-200"

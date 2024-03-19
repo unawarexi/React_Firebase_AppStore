@@ -21,7 +21,7 @@ import "swiper/css/navigation";
 
 const HomeBanner = () => {
   return (
-    <div className="w-full  rounded-[40px] h-64 xl:h-96 bg-fourth overflow-hidden relative shadow-lg shadow-[rgba(0,0,0,0.6)]">
+    <div className="w-full  rounded-[40px] h-64 xl:h-96 overflow-hidden relative shadow-lg shadow-[rgba(0,0,0,0.6)]">
       {/* slider */}
       <Swiper
         spaceBetween={30}
@@ -47,7 +47,7 @@ const HomeBanner = () => {
         </SwiperSlide>
       </Swiper>
       <div className="absolute inset-0 flex items-end justify-end z-50">
-        <div className="w-full h-auto px-8 py-4 backdrop-blur-md bg-gradient-to-b from-transparent to-[rgba(0,0,0,0.9)]  relative  flex items-center justify-start gap-6 flex-wrap">
+        <div className="w-full h-auto px-8 py-4 backdrop-blur-md bg-gradient-to-b from-transparent to-[rgba(0,0,0,0.9)]  relative flex items-center justify-start gap-6 flex-wrap">
           {/*  */}
           <div className="flex items-center justify-center gap-2 group">
             <div className="w-6 rounded-md h-6 bg-textSecondary  group-hover:bg-secondary flex items-center justify-center">
@@ -63,7 +63,7 @@ const HomeBanner = () => {
             <div className="w-6 rounded-md h-6 bg-secondary  group-hover:bg-secondary flex items-center justify-center">
               <MdSportsFootball className="text-heroPrimary " />
             </div>
-            <p className="text-secondary text-sm group-hover:text-secondary">
+            <p className="text-white text-sm group-hover:text-secondary">
               Soccer
             </p>
           </div>
@@ -100,7 +100,7 @@ export const Slide = ({ image }) => {
       <div className="absolute inset-0 bg-gradient-to-r from-[rgba(0,0,0,0.6)] to-transparent">
         <div className="w-full h-full flex flex-col items-start justify-start px-4 py-2 lg:px-8 lg:py-6  ">
           <h1
-            className="text-xl lg:text-3xl font-bold text-white tracking-wide"
+            className="text-sm lg:text-3xl font-bold text-white tracking-wide p-4"
             style={{ textShadow: "5px 5px 8px rgba(0,0,0,0.6)" }}
           >
             We give money for the{" "}

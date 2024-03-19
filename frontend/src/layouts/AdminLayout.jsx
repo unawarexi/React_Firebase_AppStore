@@ -4,6 +4,8 @@ import { AdminHeader, MainLoader } from "../components/ExpComp";
 import useUser from "../hooks/user/UseUser";
 import { FaHouse, FaHouseChimney } from "react-icons/fa6";
 
+import ResponsiveComponent from "../hooks/responsive/useResponsive";
+
 const AdminLayout = () => {
   const { data: user, isLoading: userLoading, isError, refetch } = useUser();
 
@@ -19,28 +21,43 @@ const AdminLayout = () => {
     return <MainLoader />;
   }
 
+  const width = ResponsiveComponent();
+
   return (
     <div className="w-screen h-auto flex flex-col items-center justify-start px-4 py-3">
       <AdminHeader />
 
       {/* Navigation container  */}
 
-      <div className="w-full h-auto flex items-center justify-center px-4 py-4 gap-12">
+      <div
+        className={`
+       
+  
+             "w-full h-auto flex items-center justify-center px-4 py-4 gap-8 lg:gap-12"`}
+      >
         <Link to="/">
-          <FaHouseChimney className="text-2xl hover:text-heroPrimary" />
+          <FaHouseChimney
+            className={`lg:text-2xl text-lg hover:text-heroPrimary`}
+          />
         </Link>
 
         <NavLink
           className={({ isActive }) =>
-            `text-lg font-semibold ${isActive && "text-heroPrimary"}`
+            `${
+              width <= 768 ? "text-sm font-semibold" : "text-lg font-semibold "
+            } ${isActive && "text-heroPrimary"}`
           }
           to={"/admin/home"}
-        >  Dashboard
-          
+        >
+          {" "}
+          Dashboard
         </NavLink>
+
         <NavLink
           className={({ isActive }) =>
-            `text-lg font-semibold ${isActive && "text-heroPrimary"}`
+            `${
+              width <= 768 ? "text-sm font-semibold" : "text-lg font-semibold"
+            }  ${isActive && "text-heroPrimary"}`
           }
           to={"/admin/apps"}
         >
@@ -49,7 +66,9 @@ const AdminLayout = () => {
         </NavLink>
         <NavLink
           className={({ isActive }) =>
-            `text-lg font-semibold ${isActive && "text-heroPrimary"}`
+            `${
+              width <= 768 ? "text-sm font-semibold" : "text-lg font-semibold"
+            }  ${isActive && "text-heroPrimary"}`
           }
           to={"/admin/users"}
         >
