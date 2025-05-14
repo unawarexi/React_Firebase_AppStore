@@ -8,8 +8,6 @@ for this project we're going to be making use of
 - TAILWIND FOR STYLES
 - MATERIAL-UI FOR SOME EASY COMPONENTS
 
-![Mobile AppStore](./thumb.png)
-
 <!-- Images Grid Start -->
 ## App Screenshots
 
