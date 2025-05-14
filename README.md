@@ -10,6 +10,22 @@ for this project we're going to be making use of
 
 ![Mobile AppStore](./thumb.png)
 
+<!-- Images Grid Start -->
+## App Screenshots
+
+| ![img1](./presentation/Screenshot%202025-05-03%20at%2018.38.26.png) | ![img2](./presentation/Galaxy-Fold2-localhost.png) | ![img3](./images/img3.png) |
+|----------------------------|----------------------------|----------------------------|
+| ![img4](./images/img4.png) | ![img5](./images/img5.png) | ![img6](./images/img6.png) |
+
+<br/>
+
+### Dark Theme
+
+| ![img7](./images/img7-dark.png) | ![img8](./images/img8-dark.png) | ![img9](./images/img9-dark.png) |
+|----------------------------------|----------------------------------|----------------------------------|
+
+<!-- Images Grid End -->
+
 
 
 ## version control
