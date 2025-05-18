@@ -13,11 +13,16 @@ for this project we're going to be making use of
 <!-- Images Grid Start -->
 ## App Screenshots
 
-| ![img1](./presentation/Screenshot%202025-05-03%20at%2018.38.26.png) | ![img2](./presentation/Galaxy-Fold2-localhost.png) | ![img3](./presentation/darkgrid.png) |
+| ![img1](./presentation/Screenshot%202025-05-03%20at%2018.38.26.png)  | ![img3](./presentation/darkgrid.png) |
 |----------------------------|----------------------------|----------------------------|
-| ![img4](./presentation/featured.png) | ![img5](./presentation/deatil.png) | ![img6](./presentation/lightGrid.png) |
+| ![img5](./presentation/deatil.png) | ![img6](./presentation/lightGrid.png) |
 
 <br/>
+
+## Resposiveness
+
+| ![rtc1](./images/rtc.png) | ![rtc2](./images/rtc2.png) | ![rtc3](./images/rtc3.png) |
+|---------------------------|---------------------------|---------------------------|
 
 ### Theme
 
