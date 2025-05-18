@@ -13,20 +13,28 @@ for this project we're going to be making use of
 <!-- Images Grid Start -->
 ## App Screenshots
 
-| ![img1](./presentation/Screenshot%202025-05-03%20at%2018.38.26.png) | ![img2](./presentation/Galaxy-Fold2-localhost.png) | ![img3](./images/img3.png) |
+| ![img1](./presentation/Screenshot%202025-05-03%20at%2018.38.26.png) | ![img2](./presentation/Galaxy-Fold2-localhost.png) | ![img3](./presentation/darkgrid.png) |
 |----------------------------|----------------------------|----------------------------|
-| ![img4](./images/img4.png) | ![img5](./images/img5.png) | ![img6](./images/img6.png) |
+| ![img4](./presentation/featured.png) | ![img5](./presentation/deatil.png) | ![img6](./presentation/lightGrid.png) |
 
 <br/>
 
 ### Theme
 
-| ![img7](./presentation/dark.png) | ![img8](./presentation/light.png) | ![img9](./images/img9-dark.png) |
-|----------------------------------|----------------------------------|----------------------------------|
+| ![img7](./presentation/dark.png) | ![img8](./presentation/light.png) | 
+|----------------------------------|----------------------------------|
 
 <!-- Images Grid End -->
 
+## Admin
 
+| ![admin1](./presentation/darkboard.png) | ![admin2](./presentation/darkapps.png) | ![admin3](./presentation/users.png) |
+|-------------------------------|-------------------------------|-------------------------------|
+
+## Real-time communication
+
+| ![rtc1](./presentation/darkgroup.png) | ![rtc2](./presentation/message.png) | ![rtc3](./images/rtc3.png) |
+|---------------------------|---------------------------|---------------------------|
 
 ## version control
  we'll be using git and github
