@@ -18,6 +18,11 @@ body {
   color: #b5b5b5;
 }
 
+html.dark body {
+  background: #111827;
+  color: #f3f4f6;
+}
+
 .banner-gradient {
   background: radial-gradient(
     circle,

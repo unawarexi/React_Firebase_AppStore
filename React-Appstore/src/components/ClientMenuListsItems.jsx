@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { FaChevronDown, FaChevronLeft } from "react-icons/fa6";

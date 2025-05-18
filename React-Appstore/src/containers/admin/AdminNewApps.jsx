@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { InputContainer } from "../../components/ExpComp";
 import { FaMinus, FaPlus } from "react-icons/fa6";
@@ -5,8 +6,18 @@ import { toast } from "react-toastify";
 import { saveAppDataToCloud } from "../../api/UserApi";
 import { serverTimestamp } from "firebase/firestore";
 import useUser from "../../hooks/user/UseUser";
-
 import ResponsiveComponent from "../../hooks/responsive/useResponsive";
+import { motion, AnimatePresence } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
 
 const AdminNewApps = () => {
   const [Title, setTitle] = useState("");
@@ -77,136 +88,242 @@ const AdminNewApps = () => {
     setDownload("");
     setCover("");
     setBanners([]);
-    setCoverTrailer("")
+    setCoverTrailer("");
     setShortDescription("");
   };
 
   const width = ResponsiveComponent();
 
   return (
-    <div className="w-full flex flex-col items-center justify-start px-2 py-3 gap-4">
-      <InputContainer
-        className="w-full flex flex-col items-center justify-start px-4 py-3 "
-        placeholder="App title"
-        onChangeText={(data) => setTitle(data)}
-        stateValue={Title}
-      />
-
-      <InputContainer
-        className="w-full flex flex-col items-center justify-start px-4 py-3"
-        placeholder="cover image URL"
-        onChangeText={(data) => setCover(data)}
-        stateValue={Cover}
-      />
-
-      <div
-        className="w-full flex flex-col items-center justify-center p-2 border border-gray-600 border-dashed
-       rounded-md gap-2"
+    <motion.div
+      className="w-full h-full flex flex-col gap-8 bg-[#f5f7fa] dark:bg-gradient-to-br dark:from-blue-900 dark:via-blue-600 dark:to-gray-900
+        shadow-md border border-white/20 transition-colors duration-300 rounded-md"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      <motion.div
+        className="w-full h-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-md shadow-2xl p-8 flex flex-col gap-6 border border-white/20 transition-colors duration-300"
+        variants={itemVariants}
+        style={{
+          boxShadow: "0 4px 24px 0 rgba(0,0,0,0.10)",
+          border: "1.5px solid rgba(255,255,255,0.10)",
+          borderRadius: "0.375rem", // md = 6px = 0.375rem
+        }}
       >
-        {Banners.map((input) => (
-          <div
-            className="w-full flex items-center justify-center gap-2"
-            key={input.id}
-          >
-            <input
-              className={`${
-                width <= 768
-                  ? " text-sm font-normal w-full h-12 rounded-md outline-none border border-third shadow-md bg-secondary px-4  font-sans "
-                  : "w-full h-12 rounded-md outline-none border border-third shadow-md bg-secondary px-4 text-lg font-semibold font-sans "
-              }`}
-              type="text"
-              placeholder={"Banner image URL"}
-              value={input.uri}
-              onChange={(e) => bannerHnadleChange(input.id, e.target.value)}
+        <motion.h2
+          className="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          Add New App
+        </motion.h2>
+
+        <motion.div className="flex flex-col gap-4" variants={containerVariants}>
+          <motion.div variants={itemVariants}>
+            <InputContainer
+              className="w-full"
+              placeholder="App title"
+              onChangeText={(data) => setTitle(data)}
+              stateValue={Title}
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                borderRadius: "12px",
+                border: "1.5px solid #fff3",
+                color: "#fff",
+              }}
             />
-            <div
-              className=" w-10 h-10 rounded-md flex items-center justify-center bg-red-400 cursor-pointer"
-              onClick={() => handleRemoveInput(input.id)}
-            >
-              <FaMinus className="text-textPrimary" />
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <InputContainer
+              className="w-full"
+              placeholder="Cover image URL"
+              onChangeText={(data) => setCover(data)}
+              stateValue={Cover}
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                borderRadius: "12px",
+                border: "1.5px solid #fff3",
+                color: "#fff",
+              }}
+            />
+          </motion.div>
+
+          <motion.div
+            className="w-full flex flex-col items-center justify-center p-3 border border-gray-500 dark:border-white/30 border-dashed rounded-xl gap-3 bg-white/5"
+            variants={itemVariants}
+          >
+            <div className="w-full flex items-center justify-between mb-2">
+              <span className="text-gray-500 dark:text-white/30 font-semibold">Banners</span>
+              <motion.div
+                whileTap={{ scale: 0.9 }}
+                className="flex items-center gap-2 cursor-pointer text-green-400 hover:text-green-300"
+                onClick={handleAddInput}
+              >
+                <FaPlus />
+                <span className="text-sm">Add Banner</span>
+              </motion.div>
             </div>
-          </div>
-        ))}
+            <AnimatePresence>
+              {Banners.map((input) => (
+                <motion.div
+                  className="w-full flex items-center gap-3"
+                  key={input.id}
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -40 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                >
+                  <input
+                    className={`w-full h-12 rounded-lg outline-none border border-white/30 shadow bg-white/10 px-4 text-base text-white font-medium font-sans transition-all`}
+                    type="text"
+                    placeholder={"Banner image URL"}
+                    value={input.uri}
+                    onChange={(e) => bannerHnadleChange(input.id, e.target.value)}
+                  />
+                  <motion.div
+                    whileHover={{ scale: 1.1, backgroundColor: "#f87171" }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-10 h-10 rounded-lg flex items-center justify-center bg-red-400/80 cursor-pointer transition-all"
+                    onClick={() => handleRemoveInput(input.id)}
+                  >
+                    <FaMinus className="text-white" />
+                  </motion.div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
 
-        <div
-          className="w-full flex items-center justify-center cursor-pointer"
-          onClick={handleAddInput}
+          <motion.div variants={itemVariants}>
+            <InputContainer
+              className="w-full"
+              placeholder="Company Name"
+              onChangeText={(data) => setCompany(data)}
+              stateValue={Company}
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                borderRadius: "12px",
+                border: "1.5px solid #fff3",
+                color: "#fff",
+              }}
+            />
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <InputContainer
+              className="w-full"
+              placeholder="App Icon Url"
+              onChangeText={(data) => setAppIcon(data)}
+              stateValue={AppIcon}
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                borderRadius: "12px",
+                border: "1.5px solid #fff3",
+                color: "#fff",
+              }}
+            />
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <InputContainer
+              className="w-full"
+              placeholder="App Trailer Url"
+              onChangeText={(data) => setCoverTrailer(data)}
+              stateValue={CoverTrailer}
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                borderRadius: "12px",
+                border: "1.5px solid #fff3",
+                color: "#fff",
+              }}
+            />
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <InputContainer
+              className="w-full"
+              placeholder="App Reviews"
+              onChangeText={(data) => setReviews(data)}
+              stateValue={Reviews}
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                borderRadius: "12px",
+                border: "1.5px solid #fff3",
+                color: "#fff",
+              }}
+            />
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <InputContainer
+              className="w-full"
+              placeholder="App Total Reviews"
+              onChangeText={(data) => setTotalReviews(data)}
+              stateValue={TotalReviews}
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                borderRadius: "12px",
+                border: "1.5px solid #fff3",
+                color: "#fff",
+              }}
+            />
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <InputContainer
+              className="w-full"
+              placeholder="App Total downloads"
+              onChangeText={(data) => setDownload(data)}
+              stateValue={Download}
+              style={{
+                background: "rgba(255,255,255,0.07)",
+                borderRadius: "12px",
+                border: "1.5px solid #fff3",
+                color: "#fff",
+              }}
+            />
+          </motion.div>
+          <motion.div variants={itemVariants}>
+            <textarea
+              cols="0"
+              rows="7"
+              value={ShortDescription}
+              onChange={(e) => setShortDescription(e.target.value)}
+              placeholder="Description here"
+              className="w-full rounded-xl outline-none border border-white/30 shadow bg-white/10 px-4 pt-4 text-base text-white font-medium font-sans resize-none transition-all"
+              style={{
+                minHeight: "120px",
+                background: "rgba(255,255,255,0.07)",
+                borderRadius: "12px",
+                border: "1.5px solid #fff3",
+                color: "#fff",
+              }}
+            />
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="w-full flex items-center justify-end gap-8 mt-6"
+          variants={itemVariants}
         >
-          <FaPlus />
-        </div>
-      </div>
-
-      <InputContainer
-        className="w-full flex flex-col items-center justify-start px-4 py-3"
-        placeholder="Company Name"
-        onChangeText={(data) => setCompany(data)}
-        stateValue={Company}
-      />
-      <InputContainer
-        className="w-full flex flex-col items-center justify-start px-4 py-3"
-        placeholder="App Icon Url"
-        onChangeText={(data) => setAppIcon(data)}
-        stateValue={AppIcon}
-      />
-      <InputContainer
-        className="w-full flex flex-col items-center justify-start px-4 py-3"
-        placeholder="App Trailer Url"
-        onChangeText={(data) => setCoverTrailer(data)}
-        stateValue={CoverTrailer}
-      />
-      <InputContainer
-        className="w-full flex flex-col items-center justify-start px-4 py-3"
-        placeholder="App Reviews"
-        onChangeText={(data) => setReviews(data)}
-        stateValue={Reviews}
-      />
-      <InputContainer
-        className="w-full flex flex-col items-center justify-start px-4 py-3"
-        placeholder="App Total Reviews"
-        onChangeText={(data) => setTotalReviews(data)}
-        stateValue={TotalReviews}
-      />
-      <InputContainer
-        className="w-full flex flex-col items-center justify-start px-4 py-3"
-        placeholder="App Total downloads"
-        onChangeText={(data) => setDownload(data)}
-        stateValue={Download}
-      />
-
-      <textarea
-        name=""
-        id=""
-        cols="0"
-        rows="10"
-        value={ShortDescription}
-        onChange={(e) => setShortDescription(e.target.value)}
-        placeholder="Description here"
-        className={`${
-          width <= 768
-            ? " text-sm font-normal w-full rounded-md outline-none border border-third shadow-md bg-secondary px-4 pt-4 font-sans"
-            : "w-full rounded-md outline-none border border-third shadow-md bg-secondary px-4 text-lg font-semibold font-sans"
-        }`}
-      />
-
-      <div className="w-full flex items-center justify-end gap-20">
-        <button
-          type="button"
-          className="border border-gray-600 px-8 py-2 rounded-md hover:border-none hover:bg-gradient-to-br hover:from-heroPrimary cursor-pointer
-           hover:text-black transition-all ease-in-out duration-200 active:scale-95"
-          onClick={saveAllField}
-        >
-          Add
-        </button>
-        <button
-          type="button"
-          className="border border-gray-600 px-8 py-2 rounded-md hover:border-none hover:bg-gradient-to-br hover:from-heroPrimary cursor-pointer
-           hover:text-black transition-all ease-in-out duration-200 active:scale-95"
-          onClick={clearAllField}
-        >
-          Clear
-        </button>
-      </div>
-    </div>
+          <motion.button
+            type="button"
+            className="px-8 py-2 rounded-lg bg-gradient-to-br from-green-400 to-blue-500 text-white font-semibold shadow-lg hover:from-green-500 hover:to-blue-600 transition-all active:scale-95"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={saveAllField}
+          >
+            Add
+          </motion.button>
+          <motion.button
+            type="button"
+            className="px-8 py-2 rounded-lg bg-gradient-to-br from-gray-400 to-gray-600 text-white font-semibold shadow-lg hover:from-gray-500 hover:to-gray-700 transition-all active:scale-95"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={clearAllField}
+          >
+            Clear
+          </motion.button>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 };
 

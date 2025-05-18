@@ -160,30 +160,30 @@ const MessagesComponent = () => {
         onClick={() => setShowCreateGroup(false)}
       >
         <motion.div 
-          className="bg-white rounded-xl p-6 w-full max-w-md"
+          className="bg-white dark:bg-gray-900 rounded-xl p-6 w-full max-w-md"
           initial={{ scale: 0.9, y: 20 }}
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.9, y: 20 }}
           onClick={(e) => e.stopPropagation()}
         >
-          <h2 className="text-xl font-bold mb-4 text-gray-900">Create Group Chat</h2>
+          <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Create Group Chat</h2>
           
           <div className="mb-4">
-            <label className="block text-gray-600 mb-2 text-sm">Group Name</label>
+            <label className="block text-gray-600 dark:text-gray-300 mb-2 text-sm">Group Name</label>
             <input 
               type="text" 
-              className="w-full bg-gray-100 text-gray-900 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
               placeholder="Enter group name..."
             />
           </div>
           
           <div className="mb-4">
-            <label className="block text-gray-600 mb-2 text-sm">Add Members</label>
+            <label className="block text-gray-600 dark:text-gray-300 mb-2 text-sm">Add Members</label>
             <div className="relative mb-2">
               <Search size={16} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input 
                 type="text" 
-                className="w-full bg-gray-100 text-gray-900 rounded-lg py-2 pl-9 pr-4 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-lg py-2 pl-9 pr-4 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 placeholder="Search players..."
               />
             </div>
@@ -198,9 +198,9 @@ const MessagesComponent = () => {
                         alt={user.name}
                         className="w-8 h-8 rounded-full mr-2" 
                       />
-                      <span className="text-gray-900">{user.name}</span>
+                      <span className="text-gray-900 dark:text-white">{user.name}</span>
                     </div>
-                    <button className="w-5 h-5 rounded-md border border-gray-300 flex items-center justify-center hover:bg-blue-500 hover:border-blue-500 transition-colors">
+                    <button className="w-5 h-5 rounded-md border border-gray-300 dark:border-gray-700 flex items-center justify-center hover:bg-blue-500 hover:border-blue-500 transition-colors">
                       <Plus size={12} />
                     </button>
                   </div>
@@ -210,7 +210,7 @@ const MessagesComponent = () => {
           
           <div className="flex space-x-3">
             <button 
-              className="bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg py-2 px-4 flex-1 transition-colors"
+              className="bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-200 rounded-lg py-2 px-4 flex-1 transition-colors"
               onClick={() => setShowCreateGroup(false)}
             >
               Cancel
@@ -249,9 +249,9 @@ const MessagesComponent = () => {
           <img src={Avatar} alt={message.user} className="w-8 h-8 rounded-full" />
         </div>
       )}
-      <div className={`max-w-xs lg:max-w-md ${message.sent ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-900'} rounded-2xl px-4 py-2`}>
+      <div className={`max-w-xs lg:max-w-md ${message.sent ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'} rounded-2xl px-4 py-2`}>
         {!message.sent && message.user && (
-          <div className="text-xs text-blue-600 font-medium mb-1">{message.user}</div>
+          <div className="text-xs text-blue-600 dark:text-blue-400 font-medium mb-1">{message.user}</div>
         )}
         <p className="text-sm">{message.text}</p>
         <div className="text-xs opacity-70 text-right mt-1">{message.time}</div>
@@ -270,7 +270,7 @@ const MessagesComponent = () => {
             initial="hidden"
             animate="visible"
             className={`
-              bg-white z-10
+              bg-white dark:bg-gray-900 z-10
               ${activeChat ? 'hidden md:block md:w-1/3 lg:w-1/4' : 'block w-full'}
               h-full overflow-y-auto
               transition-all duration-300
@@ -282,7 +282,7 @@ const MessagesComponent = () => {
                 <button
                   key={tab}
                   className={`relative px-4 py-2 rounded-lg font-medium transition-colors
-                    ${activeTab === tab ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:bg-gray-100'}
+                    ${activeTab === tab ? 'text-blue-600 bg-blue-50 dark:bg-blue-950' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}
                   `}
                   onClick={() => setActiveTab(tab)}
                 >
@@ -298,12 +298,12 @@ const MessagesComponent = () => {
             {/* Back button */}
             <div className="flex items-center mb-4">
               <button
-                className="p-2 mr-2 rounded-full hover:bg-gray-100 transition-colors"
+                className="p-2 mr-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 onClick={() => window.history.back()}
               >
                 <ChevronLeft size={24} />
               </button>
-              <h2 className="text-xl font-bold text-gray-900">Messages</h2>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Messages</h2>
               <div className="flex-grow" />
               <button 
                 className="bg-blue-600 hover:bg-blue-500 text-white rounded-full p-2"
@@ -320,7 +320,7 @@ const MessagesComponent = () => {
                 placeholder="Search messages..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-gray-100 w-full rounded-lg py-2 pl-10 pr-4 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="bg-gray-100 dark:bg-gray-800 w-full rounded-lg py-2 pl-10 pr-4 text-gray-900 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             {/* Chat list */}
@@ -328,7 +328,7 @@ const MessagesComponent = () => {
               {filteredChats.map(chat => (
                 <motion.div 
                   key={chat.id}
-                  className="bg-gray-100 rounded-xl p-3 flex items-center cursor-pointer hover:bg-gray-200 transition-colors"
+                  className="bg-gray-100 dark:bg-gray-800 rounded-xl p-3 flex items-center cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                   variants={itemVariants}
                   onClick={() => setActiveChat(chat)}
                 >
@@ -342,17 +342,17 @@ const MessagesComponent = () => {
                       <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
                     )}
                     {chat.type === 'group' && (
-                      <div className="absolute -bottom-1 -right-1 bg-white rounded-full w-5 h-5 flex items-center justify-center text-xs border border-gray-300">
+                      <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-900 rounded-full w-5 h-5 flex items-center justify-center text-xs border border-gray-300 dark:border-gray-700">
                         <Users size={10} />
                       </div>
                     )}
                   </div>
                   <div className="flex-grow min-w-0">
                     <div className="flex justify-between items-baseline">
-                      <div className="font-medium text-gray-900 truncate">{chat.name}</div>
+                      <div className="font-medium text-gray-900 dark:text-white truncate">{chat.name}</div>
                       <div className="text-xs text-gray-500 flex-shrink-0 ml-2">{chat.time}</div>
                     </div>
-                    <div className="text-sm text-gray-500 truncate">{chat.lastMessage}</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400 truncate">{chat.lastMessage}</div>
                   </div>
                   {chat.unread > 0 && (
                     <div className="ml-2 bg-blue-600 rounded-full w-5 h-5 flex items-center justify-center text-xs text-white">
@@ -365,10 +365,10 @@ const MessagesComponent = () => {
             {/* Empty state */}
             {filteredChats.length === 0 && (
               <div className="text-center py-10">
-                <div className="text-gray-500 mb-2">No messages found</div>
+                <div className="text-gray-500 dark:text-gray-400 mb-2">No messages found</div>
                 {searchQuery && (
                   <button 
-                    className="text-blue-600 hover:text-blue-500"
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-500"
                     onClick={() => setSearchQuery('')}
                   >
                     Clear search
@@ -383,7 +383,7 @@ const MessagesComponent = () => {
             <motion.div 
               key="chat"
               className={`
-                bg-white flex flex-col
+                bg-white dark:bg-gray-900 flex flex-col
                 fixed inset-0 md:static md:inset-auto
                 w-full md:w-2/3 lg:w-3/4
                 md:ml-2
@@ -395,7 +395,7 @@ const MessagesComponent = () => {
               exit="exit"
             >
               {/* Chat header */}
-              <div className="bg-gray-100 p-3 flex items-center border-b border-gray-200 relative">
+              <div className="bg-gray-100 dark:bg-gray-800 p-3 flex items-center border-b border-gray-200 dark:border-gray-700 relative">
                 <button 
                   className="p-2 mr-2 md:hidden" 
                   onClick={() => setActiveChat(null)}
@@ -414,8 +414,8 @@ const MessagesComponent = () => {
                     )}
                   </div>
                   <div>
-                    <div className="font-medium text-gray-900">{activeChat.name}</div>
-                    <div className="text-xs text-gray-500">
+                    <div className="font-medium text-gray-900 dark:text-white">{activeChat.name}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-400">
                       {activeChat.type === 'group' 
                         ? `${activeChat.members} members` 
                         : (activeChat.isOnline ? 'Online' : 'Offline')
@@ -464,7 +464,7 @@ const MessagesComponent = () => {
                 </div>
               </div>
               {/* Chat messages */}
-              <div className="flex-grow p-4 overflow-y-auto bg-gradient-to-b from-white to-gray-100">
+              <div className="flex-grow p-4 overflow-y-auto bg-gradient-to-b from-white dark:from-gray-900 to-gray-100 dark:to-gray-800">
                 <div className="flex flex-col">
                   {activeChat.messages.map(msg => (
                     <ChatBubble key={msg.id} message={msg} />
@@ -473,7 +473,7 @@ const MessagesComponent = () => {
                 </div>
               </div>
               {/* Message input */}
-              <div className="bg-gray-100 p-3 border-t border-gray-200 relative">
+              <div className="bg-gray-100 dark:bg-gray-800 p-3 border-t border-gray-200 dark:border-gray-700 relative">
                 <AnimatePresence>
                   {showOptions && (
                     <Attachments
@@ -497,14 +497,14 @@ const MessagesComponent = () => {
                       value={message}
                       onChange={(e) => setMessage(e.target.value)}
                       placeholder="Type a message..."
-                      className="w-full bg-white rounded-full py-2.5 px-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full bg-white dark:bg-gray-900 rounded-full py-2.5 px-4 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     <button className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-gray-500">
                       <Smile size={20} />
                     </button>
                   </div>
                   <button 
-                    className={`p-2 rounded-full ${message.trim() ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-400'}`}
+                    className={`p-2 rounded-full ${message.trim() ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-400'}`}
                     disabled={!message.trim()}
                   >
                     <Send size={20} />

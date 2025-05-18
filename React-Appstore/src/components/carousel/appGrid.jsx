@@ -115,7 +115,7 @@ const gamesCol3 = [
 function StarRating({ rating }) {
   const stars = [];
   const rounded = Math.round(rating * 2) / 2;
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 4; i++) {
     if (i <= rounded) {
       stars.push(
         <svg key={i} className="w-3 h-3 text-yellow-500 mr-0.5" fill="currentColor" viewBox="0 0 24 24">
@@ -152,7 +152,7 @@ export default function GameGrid({ cols = 5 }) {
 
   // Compute grid class based on cols prop
   const gridColsClass = cols === 1 ? "grid-cols-1" : `grid-cols-1 lg:grid-cols-${cols}`;
-  const gridMaxWidthClass = cols === 5 ? "max-w-7xl mx-auto px-4" : "";
+  const gridMaxWidthClass = cols === 4 ? "max-w-7xl mx-auto px-4" : "";
 
   // Helper to extract YouTube video ID
   function getYouTubeVideoId(url) {
@@ -180,7 +180,7 @@ export default function GameGrid({ cols = 5 }) {
         {games.map((game, idx) => (
           <motion.div 
             key={game.id}
-            className="rounded-xl overflow-hidden shadow-md bg-white"
+            className="rounded-xl overflow-hidden shadow-md bg-white dark:bg-gray-800"
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.2 }}
           >
@@ -199,7 +199,7 @@ export default function GameGrid({ cols = 5 }) {
                     className="absolute inset-0 flex items-center justify-center focus:outline-none"
                     onClick={() => handleToggleVideo(idx)}
                   >
-                    <div className="bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center">
+                    <div className="bg-black bg-opacity-50 dark:bg-opacity-60 rounded-full w-12 h-12 flex items-center justify-center">
                       <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M8 5v14l11-7z" />
                       </svg>
@@ -220,7 +220,7 @@ export default function GameGrid({ cols = 5 }) {
                     className="absolute inset-0 flex items-center justify-center focus:outline-none"
                     onClick={() => handleToggleVideo(idx)}
                   >
-                    <div className="bg-black bg-opacity-50 rounded-full w-12 h-12 flex items-center justify-center">
+                    <div className="bg-black bg-opacity-50 dark:bg-opacity-60 rounded-full w-12 h-12 flex items-center justify-center">
                       <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                         <rect x="6" y="5" width="4" height="14" />
                         <rect x="14" y="5" width="4" height="14" />
@@ -245,38 +245,79 @@ export default function GameGrid({ cols = 5 }) {
               )}
             </div>
             
-            <div className="p-3 flex items-center">
-              <div className="w-10 h-10 rounded-lg overflow-hidden mr-3">
-                <img 
-                  src={game.logo} 
-                  alt={`${game.title} logo`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              
-              <div className="flex-1">
-                <h3 className="font-medium text-sm text-gray-800">{game.title}</h3>
-                <div className="flex text-xs text-gray-500">
-                  <span>{game.category}</span>
-                  {game.subCategory && (
-                    <>
-                      <span className="mx-1">•</span>
-                      <span>{game.subCategory}</span>
-                    </>
-                  )}
-                  {game.status && (
-                    <>
-                      <span className="mx-1">•</span>
-                      <span>{game.status}</span>
-                    </>
-                  )}
-                </div>
-              </div>
-              
-              <div className="flex items-center">
-                <StarRating rating={game.rating} />
-                <span className="text-xs text-gray-700 ml-1">{game.rating}</span>
-              </div>
+            <div className={
+              cols === 4
+                ? "p-3 flex flex-col h-full bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-700 dark:to-purple-700"
+                : "p-3 flex items-center"
+            }>
+              {cols === 4 ? (
+                // Special layout for 5 columns
+                <>
+                  <div className="flex items-center mb-2">
+                    <div className="w-10 h-10 rounded-lg overflow-hidden mr-2">
+                      <img 
+                        src={game.logo} 
+                        alt={`${game.title} logo`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <StarRating rating={game.rating} />
+                      <span className="text-xs text-white">{game.rating}</span>
+                    </div>
+                  </div>
+                  <h3 className="font-medium text-sm text-white">{game.title}</h3>
+                  <div className="flex text-xs text-indigo-100 dark:text-indigo-100 mb-2">
+                    <span>{game.category}</span>
+                    {game.subCategory && (
+                      <>
+                        <span className="mx-1">•</span>
+                        <span>{game.subCategory}</span>
+                      </>
+                    )}
+                    {game.status && (
+                      <>
+                        <span className="mx-1">•</span>
+                        <span>{game.status}</span>
+                      </>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="w-10 h-10 rounded-lg overflow-hidden mr-3">
+                    <img 
+                      src={game.logo} 
+                      alt={`${game.title} logo`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  <div className="flex-1">
+                    <h3 className="font-medium text-sm text-gray-800 dark:text-white">{game.title}</h3>
+                    <div className="flex text-xs text-gray-500 dark:text-gray-400">
+                      <span>{game.category}</span>
+                      {game.subCategory && (
+                        <>
+                          <span className="mx-1">•</span>
+                          <span>{game.subCategory}</span>
+                        </>
+                      )}
+                      {game.status && (
+                        <>
+                          <span className="mx-1">•</span>
+                          <span>{game.status}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center">
+                    <StarRating rating={game.rating} />
+                    <span className="text-xs text-gray-700 dark:text-gray-200 ml-1">{game.rating}</span>
+                  </div>
+                </>
+              )}
             </div>
           </motion.div>
         ))}

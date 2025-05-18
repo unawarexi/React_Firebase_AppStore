@@ -8,6 +8,8 @@ for this project we're going to be making use of
 - TAILWIND FOR STYLES
 - MATERIAL-UI FOR SOME EASY COMPONENTS
 
+![Video Overview](./thumb.png)
+
 <!-- Images Grid Start -->
 ## App Screenshots
 
@@ -17,9 +19,9 @@ for this project we're going to be making use of
 
 <br/>
 
-### Dark Theme
+### Theme
 
-| ![img7](./images/img7-dark.png) | ![img8](./images/img8-dark.png) | ![img9](./images/img9-dark.png) |
+| ![img7](./presentation/dark.png) | ![img8](./presentation/light.png) | ![img9](./images/img9-dark.png) |
 |----------------------------------|----------------------------------|----------------------------------|
 
 <!-- Images Grid End -->

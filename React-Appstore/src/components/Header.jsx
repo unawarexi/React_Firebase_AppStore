@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, HelpCircle, User, ChevronDown } from "lucide-react";
-import UserProfileContainer from "./UserProfileContainer";
+import { Search, X, HelpCircle, User, ChevronDown, Sun, Moon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import HeaderMenuItems from "./nav/HeaderMenuItems";
 import useResponsive from "../hooks/responsive/useResponsive";
-
+import useUser from "../hooks/user/UseUser";
 import { AppleIcon, RectangleGogglesIcon } from "lucide-react";
 
 const Header = ({ onPlatformChange }) => {
@@ -13,7 +14,16 @@ const Header = ({ onPlatformChange }) => {
   const [activeTab, setActiveTab] = useState("Apps");
   const [activePlatform, setActivePlatform] = useState("PlayStore");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("theme") || "light";
+    }
+    return "light";
+  });
   const { isMobile, isTablet, isDesktop } = useResponsive();
+  const { data: user } = useUser();
+  const navigate = useNavigate();
 
   const tabs = ["Games", "Apps", "Kids"];
 
@@ -25,6 +35,18 @@ const Header = ({ onPlatformChange }) => {
       logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/App_Store_%28iOS%29.svg/2048px-App_Store_%28iOS%29.svg.png", 
       name: "App Store" },
   ];
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const root = window.document.documentElement;
+      if (theme === "dark") {
+        root.classList.add("dark");
+      } else {
+        root.classList.remove("dark");
+      }
+      localStorage.setItem("theme", theme);
+    }
+  }, [theme]);
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -52,12 +74,19 @@ const Header = ({ onPlatformChange }) => {
     }
   };
 
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  };
+
   // Find active platform details
   const currentPlatform = platformOptions.find(p => p.id === activePlatform) || platformOptions[0];
 
+  // Determine if user is admin (assuming user?.isAdmin or user?.role === 'admin')
+  const isAdmin = user && (user.isAdmin || user.role === "admin");
+
   return (
     <motion.header 
-      className="w-full bg-white shadow-sm border-b border-gray-200 fixed top-0 left-0 z-40"
+      className="w-full bg-white dark:bg-dark-bg shadow-sm border-b border-gray-200 dark:border-dark-border fixed top-0 left-0 z-40"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -75,13 +104,13 @@ const Header = ({ onPlatformChange }) => {
               alt={currentPlatform.name}
               className="h-8 w-8 mr-2"
             />
-            <span className="text-lg font-medium text-gray-800">{currentPlatform.name}</span>
+            <span className="text-lg font-medium text-gray-800 dark:text-white">{currentPlatform.name}</span>
           </motion.div>
 
           {/* Platform Dropdown */}
           <div className="relative mr-6">
             <motion.button
-              className="flex items-center px-3 py-2 rounded-md bg-gray-100 hover:bg-gray-200"
+              className="flex items-center px-3 py-2 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition"
               onClick={toggleDropdown}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -95,7 +124,7 @@ const Header = ({ onPlatformChange }) => {
             <AnimatePresence>
               {isDropdownOpen && (
                 <motion.div
-                  className="absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-10"
+                  className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-900 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-10"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
@@ -105,7 +134,9 @@ const Header = ({ onPlatformChange }) => {
                     <motion.button
                       key={platform.id}
                       className={`flex items-center w-full px-4 py-2 text-left text-sm ${
-                        activePlatform === platform.id ? 'bg-gray-100 text-gray-900' : 'text-gray-700 hover:bg-gray-50'
+                        activePlatform === platform.id 
+                          ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white' 
+                          : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800'
                       }`}
                       onClick={() => handlePlatformChange(platform.id)}
                       whileHover={{ backgroundColor: "#f3f4f6" }}
@@ -149,7 +180,20 @@ const Header = ({ onPlatformChange }) => {
         </div>
 
         <div className="flex items-center gap-4">
-
+          {/* Theme Toggle Button */}
+          <motion.button
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-bgSecondary transition"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {theme === "dark" ? (
+              <Sun size={20} className="text-yellow-400" />
+            ) : (
+              <Moon size={20} className="text-gray-700" />
+            )}
+          </motion.button>
         </div>
 
         {/* Search and Profile */}
@@ -201,13 +245,50 @@ const Header = ({ onPlatformChange }) => {
               >
                 <HelpCircle size={20} className="text-gray-700" />
               </motion.button>
-              <motion.div
-                className="flex items-center justify-center w-8 h-8 rounded-full bg-teal-700 text-white cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <User size={16} />
-              </motion.div>
+              <div className="relative">
+                <motion.div
+                  id="profile-menu-btn"
+                  className="flex items-center justify-center w-8 h-8 rounded-full bg-teal-700 text-white cursor-pointer overflow-hidden relative"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsProfileMenuOpen((v) => !v)}
+                >
+                  {user && (user.picture || user.photoURL) ? (
+                    <img
+                      src={user.picture || user.photoURL}
+                      alt="User"
+                      className="w-8 h-8 object-cover rounded-full"
+                    />
+                  ) : (
+                    <User size={16} />
+                  )}
+                </motion.div>
+                {/* Profile dropdown */}
+                <AnimatePresence>
+                  {isProfileMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute right-0 mt-2 z-50"
+                      style={{
+                        left: "auto",
+                        right: 0,
+                        transform: "translateX(calc(100% - 320px))",
+                        minWidth: 320,
+                        maxWidth: 360,
+                      }}
+                    >
+                      <HeaderMenuItems
+                        user={user}
+                        isAdmin={isAdmin}
+                        onClose={() => setIsProfileMenuOpen(false)}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </>
           )}
         </div>

@@ -135,7 +135,7 @@ const AppStoreSidebar = ({
       {/* Sidebar wrapper for desktop/tablet */}
       {!isMobile && (
         <motion.div
-          className={`h-full bg-white shadow-xl overflow-hidden`}
+          className={`h-full bg-white dark:bg-gray-900 shadow-xl overflow-hidden border-r border-gray-200 dark:border-gray-700`}
           animate={{
             width: isCollapsed ? "5rem" : "16rem",
           }}
@@ -148,7 +148,7 @@ const AppStoreSidebar = ({
           <div className="flex flex-col h-full">
             {/* Header */}
             <motion.div
-              className={`flex items-center justify-between p-4 border-b border-gray-800 ${
+              className={`flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 ${
                 isCollapsed ? "justify-center" : ""
               }`}
             >
@@ -159,12 +159,12 @@ const AppStoreSidebar = ({
                   initial="closed"
                   animate="open"
                 >
-                  <span className="text-lg font-bold text-gray-900 mr-2">App Store</span>
+                  <span className="text-lg font-bold text-gray-900 dark:text-white mr-2">App Store</span>
                 </motion.div>
               )}
 
               <motion.button
-                className="p-2 rounded-full hover:bg-gray-800 text-gray-400"
+                className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-400"
                 whileTap={{ scale: 0.95 }}
                 onClick={onToggleCollapse}
               >
@@ -198,14 +198,14 @@ const AppStoreSidebar = ({
             </motion.div>
 
             {/* Footer */}
-            <motion.div className="p-4 border-t border-gray-800 text-center">
+            <motion.div className="p-4 border-t border-gray-200 dark:border-gray-700 text-center">
               {!isCollapsed && (
                 <motion.div
                   variants={menuItemVariants}
                   initial="closed"
                   animate="open"
                 >
-                  <span className="text-xs text-gray-500">© 2025 App Store</span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">© 2025 App Store</span>
                 </motion.div>
               )}
             </motion.div>
@@ -226,7 +226,7 @@ const AppStoreSidebar = ({
             >
               <div className="flex flex-col h-full">
                 {/* Mobile Header */}
-                <div className="flex items-center justify-between p-4 border-b border-gray-800">
+                <div className="flex items-center justify-between p-4 border-b border-gray-700">
                   <div className="flex items-center">
                     <span className="text-lg font-bold text-white">App Store</span>
                   </div>
@@ -262,8 +262,8 @@ const AppStoreSidebar = ({
                 </div>
 
                 {/* Mobile Footer */}
-                <div className="p-4 border-t border-gray-800 text-center">
-                  <span className="text-xs text-gray-500">© 2025 App Store</span>
+                <div className="p-4 border-t border-gray-700 text-center">
+                  <span className="text-xs text-gray-500 dark:text-gray-400">© 2025 App Store</span>
                 </div>
               </div>
             </motion.div>

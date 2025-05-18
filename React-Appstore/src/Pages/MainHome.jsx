@@ -12,12 +12,15 @@ import { smoothPopIn } from "../animation/Animations";
 
 import ResponsiveComponent from "../hooks/responsive/useResponsive";
 import PlayStoreHome from "./playstore/PlayStoreHome";
-import PromoCarousel from "../components/PromotionalCarousel";
-import GameGrid from "../components/appGrid";
-import MainCarousel from "../components/MainCarousel";
+import PromoCarousel from "../components/carousel/PromotionalCarousel";
+import GameGrid from "../components/carousel/appGrid";
+import MainCarousel from "../components/carousel/MainCarousel";
 import RapidPlayStoreHome from "./rapid/Rapidplaystorehome";
-import SubCarousel from "../components/SubCarousel";
+import SubCarousel from "../components/carousel/SubCarousel";
 import Footer from "../components/Footer";
+import SubAppGrid from "../components/carousel/SubAppGrid";
+import DiscountCarousel from "../components/carousel/DiscountCarousel";
+import FooterEventCarousel from "../components/carousel/FooterEventCarousel";
 
 const MainHome = () => {
   const navigate = useNavigate();
@@ -42,7 +45,7 @@ const MainHome = () => {
   };
 
   return (
-    <div>
+    <div className="bg-white dark:bg-gray-900 min-h-screen">
       <div
         className={`${
           width <= 768
@@ -56,10 +59,8 @@ const MainHome = () => {
           <HomeBanner />
           <MainCarousel />
 
-          <section className=" mt-6">
-          <PlayStoreHome />
-            
-           
+          <section className="mt-6">
+            <PlayStoreHome />
           </section>
 
           {/* Mannually added and fetched from firebase  */}
@@ -89,20 +90,26 @@ const MainHome = () => {
                     visible: { opacity: 1, y: 0 },
                   }}
                   transition={{ type: "spring", stiffness: 80, damping: 15 }}
-                  whileHover={{ scale: 1.04, boxShadow: "0 8px 24px rgba(0,0,0,0.12)" }}
-                  className="transition-all duration-200 flex flex-col items-center p-3 cursor-pointer relative group"
+                  whileHover={{
+                    scale: 1.04,
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                  }}
+                  className="transition-all duration-200 flex flex-col items-center p-3 cursor-pointer relative group bg-gray-100 dark:bg-gray-800 rounded-lg"
                 >
-                  <Link to={`/detail/${app?._id}`} className="w-full flex flex-col items-center">
+                  <Link
+                    to={`/detail/${app?._id}`}
+                    className="w-full flex flex-col items-center"
+                  >
                     <img
                       src={app?.AppIcon}
                       alt="cover"
-                      className="w-14 h-14 rounded-lg object-cover mb-2 border border-gray-200"
+                      className="w-14 h-14 rounded-lg object-cover mb-2 border border-gray-200 dark:border-gray-700"
                     />
                     <div className="w-full flex flex-col items-center">
-                      <p className="text-xs font-semibold text-gray-900 truncate w-full text-center">
+                      <p className="text-xs font-semibold text-gray-900 dark:text-white truncate w-full text-center">
                         {app?.Title}
                       </p>
-                      <p className="text-[10px] text-gray-500 truncate w-full text-center">
+                      <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate w-full text-center">
                         {app?.Company}
                       </p>
                     </div>
@@ -113,17 +120,16 @@ const MainHome = () => {
               ))}
           </motion.div>
           <div className="w-full">
-        <GameGrid cols={5} />
-      </div>
-      <div>
-          <SubCarousel />
-        </div>
+            <GameGrid cols={4} />
+            <SubCarousel />
+            <SubAppGrid />
+          </div>
         </div>
 
-        {/* Right section */}
+        {/*---------------------------------- Right section */}
         {width <= 900 ? (
           <div
-            className="fixed bottom-4 right-4 z-[999] bg-white rounded-full p-2 shadow-md cursor-pointer "
+            className="fixed bottom-4 right-4 z-[999] bg-white dark:bg-gray-900 rounded-full p-2 shadow-md cursor-pointer "
             onClick={toggleChat}
           >
             <MdOutlineMarkUnreadChatAlt
@@ -140,15 +146,17 @@ const MainHome = () => {
         )}
       </div>
       {/* GameGrid cols={3} now full width, no px-6/py-4 */}
-      <div className="w-full">
-        <GameGrid cols={5} />
-      </div>
       <div className="w-full mt-8">
         <RapidPlayStoreHome />
+        <DiscountCarousel />
+        
+      </div>
+      <div className="w-full mt-8">
+        <FooterEventCarousel />
       </div>
       <div>
-            <Footer />
-          </div>
+        <Footer />
+      </div>
     </div>
   );
 };

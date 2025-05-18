@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { Header } from "../components/ExpComp";
-import SubNav from "../components/SubNav";
+import SubNav from "../components/nav/SubNav";
 
 const RightLayoutContainer = () => {
   return (

@@ -5,7 +5,7 @@ import useUser from "../hooks/user/UseUser";
 import useApps from "../hooks/apps/UseApps";
 import { Header, MainLoader } from "../components/ExpComp";
 import {LeftLayoutContainer, RightLayoutContainer} from "../containers/ExpContainers";
-import SubNav from "../components/SubNav";
+import SubNav from "../components/nav/SubNav";
 import useResponsive from "../hooks/responsive/useResponsive";
 import Footer from "../components/Footer";
 

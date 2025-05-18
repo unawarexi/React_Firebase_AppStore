@@ -25,7 +25,7 @@ const categoryOptions = [
 const AppCard = ({ app }) => {
   return (
     <motion.div 
-      className="flex flex-col w-32 p-2 cursor-pointer"
+      className="flex flex-col w-32 p-2 cursor-pointer bg-white dark:bg-gray-800 rounded-lg"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
@@ -36,16 +36,16 @@ const AppCard = ({ app }) => {
           className="w-16 h-16 rounded-xl mx-auto"
         />
       </div>
-      <h3 className="text-sm font-medium truncate">{app.title}</h3>
+      <h3 className="text-sm font-medium truncate text-gray-900 dark:text-white">{app.title}</h3>
       <div className="flex items-center mt-1">
         <div className="flex text-yellow-500">
           {[...Array(5)].map((_, i) => (
-            <span key={i} className={`text-xs ${i < Math.round(app.rating || 0) ? "text-yellow-500" : "text-gray-300"}`}>★</span>
+            <span key={i} className={`text-xs ${i < Math.round(app.rating || 0) ? "text-yellow-500" : "text-gray-300 dark:text-gray-600"}`}>★</span>
           ))}
         </div>
-        <span className="text-xs text-gray-500 ml-1">{app.rating?.toFixed(1) || "N/A"}</span>
+        <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">{app.rating?.toFixed(1) || "N/A"}</span>
       </div>
-      <p className="text-xs text-gray-500 mt-1 truncate">{app.price_text || "Free"}</p>
+      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">{app.price_text || "Free"}</p>
     </motion.div>
   );
 };
@@ -54,13 +54,13 @@ const AppCard = ({ app }) => {
 const AppRow = ({ app, index }) => {
   return (
     <motion.div 
-      className="flex items-center p-2 cursor-pointer"
+      className="flex items-center p-2 cursor-pointer bg-white dark:bg-gray-800 rounded-lg"
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
       whileHover={{ backgroundColor: "rgba(0,0,0,0.05)" }}
     >
-      <span className="text-gray-400 w-6 text-center">{index + 1}</span>
+      <span className="text-gray-400 dark:text-gray-500 w-6 text-center">{index + 1}</span>
       <div className="w-12 h-12 mx-3">
         <img 
           src={app.icon || "/api/placeholder/48/48"} 
@@ -69,19 +69,19 @@ const AppRow = ({ app, index }) => {
         />
       </div>
       <div className="flex-1">
-        <h3 className="font-medium truncate">{app.title}</h3>
-        <p className="text-xs text-gray-500 truncate">{app.developer}</p>
+        <h3 className="font-medium truncate text-gray-900 dark:text-white">{app.title}</h3>
+        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{app.developer}</p>
         <div className="flex items-center mt-1">
           <div className="flex text-yellow-500">
             {[...Array(5)].map((_, i) => (
-              <span key={i} className={`text-xs ${i < Math.round(app.rating || 0) ? "text-yellow-500" : "text-gray-300"}`}>★</span>
+              <span key={i} className={`text-xs ${i < Math.round(app.rating || 0) ? "text-yellow-500" : "text-gray-300 dark:text-gray-600"}`}>★</span>
             ))}
           </div>
-          <span className="text-xs text-gray-500 ml-1">{app.rating?.toFixed(1) || "N/A"}</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">{app.rating?.toFixed(1) || "N/A"}</span>
         </div>
       </div>
       <div className="ml-2 w-16 text-center">
-        <button className="bg-gray-100 text-green-700 rounded-full py-1 px-3 text-sm font-medium">
+        <button className="bg-gray-100 dark:bg-gray-700 text-green-700 dark:text-green-400 rounded-full py-1 px-3 text-sm font-medium">
           {app.price_text || "Free"}
         </button>
       </div>
@@ -94,14 +94,14 @@ const AppGrid = ({ apps, isLoading }) => {
   if (isLoading) {
     return (
       <div className="flex justify-center py-8">
-        <div className="w-8 h-8 border-4 border-gray-200 border-t-green-500 rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-gray-200 dark:border-gray-700 border-t-green-500 dark:border-t-green-400 rounded-full animate-spin"></div>
       </div>
     );
   }
 
   if (!apps || apps.length === 0) {
     return (
-      <div className="flex justify-center py-8 text-gray-500">
+      <div className="flex justify-center py-8 text-gray-500 dark:text-gray-400">
         No apps found. Try again later.
       </div>
     );
@@ -112,7 +112,7 @@ const AppGrid = ({ apps, isLoading }) => {
       {apps?.map((app, index) => (
         <motion.div 
           key={app.package_name || index}
-          className="bg-white rounded-lg shadow-sm p-3 cursor-pointer"
+          className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-3 cursor-pointer"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.03 }}
@@ -125,27 +125,27 @@ const AppGrid = ({ apps, isLoading }) => {
               className="w-16 h-16 rounded-xl"
             />
             <div className="ml-3 flex-1">
-              <h3 className="font-medium text-sm truncate">{app.title}</h3>
-              <p className="text-xs text-gray-500 truncate">{app.developer}</p>
+              <h3 className="font-medium text-sm truncate text-gray-900 dark:text-white">{app.title}</h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{app.developer}</p>
               <div className="flex items-center mt-1">
                 <span className="text-xs text-yellow-500 mr-1">{app.rating?.toFixed(1) || "N/A"}</span>
                 <div className="flex text-yellow-500">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className={`text-xs ${i < Math.round(app.rating || 0) ? "text-yellow-500" : "text-gray-300"}`}>★</span>
+                    <span key={i} className={`text-xs ${i < Math.round(app.rating || 0) ? "text-yellow-500" : "text-gray-300 dark:text-gray-600"}`}>★</span>
                   ))}
                 </div>
               </div>
             </div>
           </div>
           <div className="mt-2 flex justify-between items-center">
-            <span className="text-xs text-gray-500">
+            <span className="text-xs text-gray-500 dark:text-gray-400">
               {app.downloads_text || `${Math.floor(Math.random() * 1000)}M+ downloads`}
             </span>
-            <button className="bg-gray-100 text-green-700 rounded-full px-3 py-1 text-xs font-medium">
+            <button className="bg-gray-100 dark:bg-gray-700 text-green-700 dark:text-green-400 rounded-full px-3 py-1 text-xs font-medium">
               {app.price_text || "Free"}
             </button>
           </div>
-          <p className="text-xs text-gray-600 mt-2 line-clamp-2">
+          <p className="text-xs text-gray-600 dark:text-gray-300 mt-2 line-clamp-2">
             {app.short_desc || app.description?.substring(0, 80) || "An amazing app for your Android device."}
           </p>
         </motion.div>
@@ -161,9 +161,9 @@ const AppSection = ({ title, apps, viewAll, horizontal = true }) => {
   return (
     <div className="mb-6">
       <div className="flex justify-between items-center mb-2 px-4">
-        <h2 className="text-xl font-bold">{title}</h2>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white">{title}</h2>
         {viewAll && (
-          <button className="text-green-700 font-medium">See all</button>
+          <button className="text-green-700 dark:text-green-400 font-medium">See all</button>
         )}
       </div>
       
@@ -335,13 +335,13 @@ const PlayStoreHome = () => {
   };
   
   return (
-    <div className="bg-gray-50">
+    <div className="bg-gray-50 dark:bg-gray-900 scrollbar-none">
       {/* Header */}
-      <div className="bg-white shadow-sm">
+      <div className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex flex-col md:flex-row md:items-center">
             <div className="flex items-center mb-4 md:mb-0">
-              <h1 className="text-2xl font-bold text-green-700">Play Store</h1>
+              <h1 className="text-2xl font-bold text-green-700 dark:text-green-400">Play Store</h1>
             </div>
             
             <div className="flex-1 md:ml-6">
@@ -349,10 +349,10 @@ const PlayStoreHome = () => {
                 <input
                   type="text"
                   placeholder="Search for apps & games"
-                  className="w-full py-2 px-4 pl-10 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full py-2 px-4 pl-10 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-green-500 dark:focus:ring-green-400 focus:border-transparent"
                   onChange={handleSearch}
                 />
-                <div className="absolute left-3 top-2.5 text-gray-400">
+                <div className="absolute left-3 top-2.5 text-gray-400 dark:text-gray-500">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
@@ -362,21 +362,21 @@ const PlayStoreHome = () => {
           </div>
           
           {/* Tabs */}
-          <div className="flex mt-4 border-b">
+          <div className="flex mt-4 border-b border-gray-200 dark:border-gray-700">
             <button
-              className={`px-4 py-2 font-medium ${activeTab === 'charts' ? 'text-green-700 border-b-2 border-green-700' : 'text-gray-500'}`}
+              className={`px-4 py-2 font-medium ${activeTab === 'charts' ? 'text-green-700 dark:text-green-400 border-b-2 border-green-700 dark:border-green-400' : 'text-gray-500 dark:text-gray-400'}`}
               onClick={() => setActiveTab('charts')}
             >
               Top Charts
             </button>
             <button
-              className={`px-4 py-2 font-medium ${activeTab === 'forYou' ? 'text-green-700 border-b-2 border-green-700' : 'text-gray-500'}`}
+              className={`px-4 py-2 font-medium ${activeTab === 'forYou' ? 'text-green-700 dark:text-green-400 border-b-2 border-green-700 dark:border-green-400' : 'text-gray-500 dark:text-gray-400'}`}
               onClick={() => setActiveTab('forYou')}
             >
               For You
             </button>
             <button
-              className={`px-4 py-2 font-medium ${activeTab === 'categories' ? 'text-green-700 border-b-2 border-green-700' : 'text-gray-500'}`}
+              className={`px-4 py-2 font-medium ${activeTab === 'categories' ? 'text-green-700 dark:text-green-400 border-b-2 border-green-700 dark:border-green-400' : 'text-gray-500 dark:text-gray-400'}`}
               onClick={() => setActiveTab('categories')}
             >
               Categories
@@ -386,16 +386,16 @@ const PlayStoreHome = () => {
       </div>
       
       {/* Filters Bar */}
-      <div className="bg-white shadow-sm mb-4">
+      <div className="bg-white dark:bg-gray-800 shadow-sm mb-4">
         <div className="max-w-7xl mx-auto px-4 py-2 overflow-x-auto">
           <div className="flex items-center space-x-4">
             <div className="whitespace-nowrap">
-              <label htmlFor="category" className="text-sm font-medium text-gray-700 mr-2">Category:</label>
+              <label htmlFor="category" className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">Category:</label>
               <select
                 id="category"
                 value={selectedCategory}
                 onChange={handleCategoryChange}
-                className="py-1 px-2 border border-gray-300 rounded text-sm"
+                className="py-1 px-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded text-sm"
               >
                 {categoryOptions.map(cat => (
                   <option key={cat.key} value={cat.key}>{cat.label}</option>
@@ -405,12 +405,12 @@ const PlayStoreHome = () => {
             
             {activeTab === 'charts' && (
               <div className="whitespace-nowrap">
-                <label htmlFor="chartType" className="text-sm font-medium text-gray-700 mr-2">Chart Type:</label>
+                <label htmlFor="chartType" className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">Chart Type:</label>
                 <select
                   id="chartType"
                   value={selectedChartType}
                   onChange={handleChartTypeChange}
-                  className="py-1 px-2 border border-gray-300 rounded text-sm"
+                  className="py-1 px-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded text-sm"
                 >
                   <option value={chartTypes.TOPSELLING_FREE}>Top Free</option>
                   <option value={chartTypes.TOPSELLING_PAID}>Top Paid</option>
@@ -423,12 +423,12 @@ const PlayStoreHome = () => {
             {activeTab === 'forYou' && (
               <>
                 <div className="whitespace-nowrap">
-                  <label htmlFor="contentRating" className="text-sm font-medium text-gray-700 mr-2">Content Rating:</label>
+                  <label htmlFor="contentRating" className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">Content Rating:</label>
                   <select
                     id="contentRating"
                     value={selectedContentRating}
                     onChange={handleContentRatingChange}
-                    className="py-1 px-2 border border-gray-300 rounded text-sm"
+                    className="py-1 px-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded text-sm"
                   >
                     <option value="ALL">All Ratings</option>
                     {Object.entries(contentRatings).map(([key, label]) => (
@@ -438,12 +438,12 @@ const PlayStoreHome = () => {
                 </div>
                 
                 <div className="whitespace-nowrap">
-                  <label htmlFor="timePeriod" className="text-sm font-medium text-gray-700 mr-2">Time Period:</label>
+                  <label htmlFor="timePeriod" className="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">Time Period:</label>
                   <select
                     id="timePeriod"
                     value={selectedTimePeriod}
                     onChange={handleTimePeriodChange}
-                    className="py-1 px-2 border border-gray-300 rounded text-sm"
+                    className="py-1 px-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white rounded text-sm"
                   >
                     {Object.entries(timePeriods).map(([key, label]) => (
                       <option key={key} value={key}>{label.replace('_', ' ').toLowerCase()}</option>
@@ -460,7 +460,7 @@ const PlayStoreHome = () => {
       <div className="max-w-7xl mx-auto pb-12">
         {activeTab === 'search' && searchTerm && (
           <div className="mb-8">
-            <h2 className="text-xl font-bold px-4 mb-4">Search Results for "{searchTerm}"</h2>
+            <h2 className="text-xl font-bold px-4 mb-4 text-gray-900 dark:text-white">Search Results for "{searchTerm}"</h2>
             <AppGrid apps={searchQuery.data} isLoading={searchQuery.isLoading} />
           </div>
         )}
@@ -531,14 +531,14 @@ const PlayStoreHome = () => {
             {categoryOptions.slice(1).map((category) => (
               <motion.div
                 key={category.key}
-                className="bg-white rounded-lg shadow-sm p-4 cursor-pointer"
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 cursor-pointer"
                 whileHover={{ scale: 1.03 }}
                 onClick={() => {
                   setSelectedCategory(category.key);
                   setActiveTab('charts');
                 }}
               >
-                <h3 className="font-medium text-center">{category.label}</h3>
+                <h3 className="font-medium text-center text-gray-900 dark:text-white">{category.label}</h3>
               </motion.div>
             ))}
           </div>

@@ -53,7 +53,7 @@ const SubNav = ({ platform = "PlayStore" }) => {
 
   return (
     <motion.div
-      className="w-full bg-white border-b border-gray-200 px-4 py-4 overflow-hidden sticky top-[56px] left-0 z-30"
+      className="w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-4 overflow-hidden sticky top-[56px] left-0 z-30"
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: 0.1 }}
@@ -66,9 +66,9 @@ const SubNav = ({ platform = "PlayStore" }) => {
               className={`flex items-center whitespace-nowrap px-4 py-2 rounded-full border ${
                 activeDevice === id
                   ? platform === "AppStore" 
-                    ? "border-blue-400 bg-blue-50" 
-                    : "border-gray-400 bg-gray-100"
-                  : "border-gray-300 hover:border-gray-400"
+                    ? "border-blue-400 bg-blue-50 dark:bg-blue-950 dark:border-blue-500" 
+                    : "border-gray-400 bg-gray-100 dark:bg-gray-800 dark:border-gray-500"
+                  : "border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-400"
               }`}
               onClick={() => setActiveDevice(id === activeDevice ? null : id)}
               whileHover={{ scale: 1.05 }}
@@ -77,13 +77,17 @@ const SubNav = ({ platform = "PlayStore" }) => {
             >
               <Icon size={18} className={`mr-2 ${
                 activeDevice === id 
-                  ? platform === "AppStore" ? "text-blue-600" : "text-gray-800" 
-                  : "text-gray-600"
+                  ? platform === "AppStore" 
+                    ? "text-blue-600 dark:text-blue-400" 
+                    : "text-gray-800 dark:text-gray-200" 
+                  : "text-gray-600 dark:text-gray-400"
               }`} />
               <span className={`text-sm font-medium ${
                 activeDevice === id 
-                  ? platform === "AppStore" ? "text-blue-600" : "text-gray-800" 
-                  : "text-gray-600"
+                  ? platform === "AppStore" 
+                    ? "text-blue-600 dark:text-blue-400" 
+                    : "text-gray-800 dark:text-gray-200" 
+                  : "text-gray-600 dark:text-gray-400"
               }`}>
                 {label}
               </span>
@@ -127,8 +131,8 @@ const AnimatedDeviceInfo = ({ activeDevice, platform }) => {
   };
 
   const deviceInfo = getDeviceInfo();
-  const bgColor = platform === "AppStore" ? "bg-blue-50" : "bg-blue-50";
-  const textColor = platform === "AppStore" ? "text-blue-800" : "text-blue-800";
+  const bgColor = "bg-blue-50 dark:bg-blue-950";
+  const textColor = "text-blue-800 dark:text-blue-200";
 
   return (
     <motion.div

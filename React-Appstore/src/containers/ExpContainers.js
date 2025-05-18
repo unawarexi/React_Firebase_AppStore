@@ -8,4 +8,4 @@ export {default as UserListCard} from "./admin/UserListCard"
 //Layout Container
 export {default as LeftLayoutContainer} from "./LeftLayoutContainer"
 export {default as RightLayoutContainer} from "./RightLayoutContainer"
-export {default as ClientChatContainer} from "./ClientChatContainer"
+export {default as ClientChatContainer} from "./client/ClientChatContainer"
