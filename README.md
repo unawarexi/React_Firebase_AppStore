@@ -14,7 +14,7 @@ for this project we're going to be making use of
 ## App Screenshots
 
 | ![img1](./presentation/Screenshot%202025-05-03%20at%2018.38.26.png)  | ![img3](./presentation/darkgrid.png) |
-|----------------------------|----------------------------|----------------------------|
+|----------------------------|----------------------------|
 | ![img5](./presentation/deatil.png) | ![img6](./presentation/lightGrid.png) |
 
 <br/>
