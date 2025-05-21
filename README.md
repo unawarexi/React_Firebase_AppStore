@@ -21,8 +21,8 @@ for this project we're going to be making use of
 
 | ![img1](./presentation/Screenshot%202025-05-03%20at%2018.38.26.png) | ![img2](./presentation/featured.png) | ![img3](./presentation/darkgrid.png) |
 |----------------------------|----------------------------|----------------------------|
-| ![img4](./presentation/tabchat.png) | ![img5](./presentation/deatil.png) | ![img6](./presentation/lightGrid.png) |
-| ![img7](./presentation/authphone.png) | ![img8](./presentation/Xiaomi-12-localhost.png) | ![img9](./presentation/tabauth.png) |
+| ![img4](./presentation/iPhone-14-Plus-localhost%20(1).png) | ![img5](./presentation/deatil.png) | ![img6](./presentation/lightGrid.png) |
+| ![img7](./presentation/authphone.png) | ![img8](./presentation/Xiaomi-12-localhost.png) | ![img9](./presentation/iPhone-14-Plus-localhost%20(2).png) |
 
 <br/>
 
