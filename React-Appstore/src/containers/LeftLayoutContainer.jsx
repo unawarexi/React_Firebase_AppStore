@@ -9,8 +9,7 @@ import {
 import { appStoreCategories } from "../utils/data/AppStoreCategories";
 import { menuItemVariants, subMenuVariants } from "../animation/Animations";
 
-
-const CategoryMenuItem = ({ item, isCollapsed }) => {
+const CategoryMenuItem = ({ item, isCollapsed, isMobile, onAnyItemClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const IconComponent = item.icon;
@@ -21,6 +20,8 @@ const CategoryMenuItem = ({ item, isCollapsed }) => {
       setIsOpen(!isOpen);
     } else if (item.route) {
       navigate(item.route);
+      // Close mobile sidebar if on mobile
+      if (isMobile && onAnyItemClick) onAnyItemClick();
     }
   };
 
@@ -28,6 +29,8 @@ const CategoryMenuItem = ({ item, isCollapsed }) => {
     e.stopPropagation();
     if (subItem.route) {
       navigate(subItem.route);
+      // Close mobile sidebar if on mobile
+      if (isMobile && onAnyItemClick) onAnyItemClick();
     }
   };
 
@@ -117,13 +120,20 @@ const AppStoreSidebar = ({
   isTablet,
   isDesktop,
 }) => {
+  // Helper to close mobile sidebar on item click
+  const handleAnyItemClick = () => {
+    if (isMobile && onToggleMobileMenu) {
+      onToggleMobileMenu();
+    }
+  };
+
   return (
     <>
       {/* Mobile toggle button */}
-      {isMobile && (
-        <div className="fixed top-4 left-4 z-50">
+      {isMobile && !isMobileVisible && (
+        <div className="fixed top-20 left-0 z-50">
           <motion.button
-            className="p-2 rounded-full bg-gray-800 text-white"
+            className="p-2 rounded-full bg-gray-800 text-white dark:bg-blue-600"
             whileTap={{ scale: 0.95 }}
             onClick={onToggleMobileMenu}
           >
@@ -192,6 +202,7 @@ const AppStoreSidebar = ({
                     key={index}
                     item={item}
                     isCollapsed={isCollapsed}
+                    isMobile={false}
                   />
                 ))}
               </motion.ul>
@@ -256,6 +267,8 @@ const AppStoreSidebar = ({
                         key={index}
                         item={item}
                         isCollapsed={false}
+                        isMobile={true}
+                        onAnyItemClick={handleAnyItemClick}
                       />
                     ))}
                   </motion.ul>
@@ -276,7 +289,7 @@ const AppStoreSidebar = ({
 
 const LeftLayoutContainer = ({ isMobile, isTablet, isDesktop }) => {
   // For desktop/tablet: collapsed state, for mobile: sidebar visibility
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true); // changed from false to true
   const [isMobileVisible, setIsMobileVisible] = useState(false);
 
   const handleToggleCollapse = () => {

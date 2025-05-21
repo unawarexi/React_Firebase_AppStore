@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 
 export default function SubCarousel() {
-  // Use the same games data as MainCarousel
   const games = [
     {
       id: 1,
@@ -43,123 +42,151 @@ export default function SubCarousel() {
 
   // Duplicate the games array to ensure infinite scrolling effect
   const extendedGames = [...games, ...games, ...games];
-  
+
   // State for scroll position
   const [scrollX, setScrollX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const carouselRef = useRef(null);
   const intervalRef = useRef(null);
   const slideInterval = 3500; // 3.5 seconds
+  const cardWidth = 320; // px
+
+  // Framer Motion controls for imperative animation
+  const controls = useAnimation();
 
   // Handle auto rotation
   useEffect(() => {
-    // Set new interval
+    if (isDragging) return; // Pause auto-slide while dragging
+
     intervalRef.current = setInterval(() => {
       setScrollX(prev => {
-        const newScrollX = prev - 320; // Move by one card width
-        
-        // If we've scrolled far enough, reset position but maintain visual continuity
-        if (newScrollX < -games.length * 320) {
-          return -320;
+        const newScrollX = prev - cardWidth;
+        if (newScrollX < -games.length * cardWidth) {
+          return -cardWidth;
         }
-        
         return newScrollX;
       });
     }, slideInterval);
-    
-    // Cleanup function
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [games.length]);
 
-  // Calculate how many cards to display based on the viewport width
-  const getCardWidthStyle = () => {
-    return {
-      flexBasis: "calc(33.333% - 16px)",
-      flexShrink: 0,
-      flexGrow: 0,
-      margin: "0 8px",
-      minWidth: "320px",
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  };
+  }, [games.length, isDragging]);
+
+  // Animate scrollX changes
+  useEffect(() => {
+    controls.start({ x: scrollX, transition: { ease: "easeInOut", duration: 0.5 } });
+  }, [scrollX, controls]);
+
+  // Responsive card width style
+  const getCardWidthStyle = () => ({
+    flexBasis: "calc(33.333% - 16px)",
+    flexShrink: 0,
+    flexGrow: 0,
+    margin: "0 8px",
+    minWidth: "320px",
+  });
 
   // Render a single game card
   const renderGameCard = (game, index) => (
-    <div 
-      key={`${game.id}-${index}`} 
+    <div
+      key={`${game.id}-${index}`}
       style={getCardWidthStyle()}
-      className="game-card bg-black rounded-2xl overflow-hidden relative shadow-2xl h-[360px]"
+      className="game-card bg-black rounded-2xl overflow-hidden relative shadow-2xl h-[360px] 
+        sm:h-[320px] xs:h-[260px] xs:min-w-[220px] xs:max-w-[260px] xs:mx-1
+        transition-all duration-200"
     >
       {/* Background Image */}
       <div className="relative h-3/5">
-        <img 
-          src={game.image} 
-          alt={game.title} 
+        <img
+          src={game.image}
+          alt={game.title}
           className="w-full h-full object-cover"
         />
         {/* Tag Overlay */}
         {game.tag && (
-          <div className="absolute top-4 left-4 bg-black bg-opacity-75 text-white text-sm rounded-md px-3 py-1">
+          <div className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-black bg-opacity-75 text-white text-xs sm:text-sm rounded-md px-2 py-0.5 sm:px-3 sm:py-1">
             {game.tag}
           </div>
         )}
         {/* Title Overlay */}
-        <div className="absolute bottom-0 left-0 p-4 text-white">
-          <h2 className="text-xl font-bold truncate">{game.title}</h2>
-          {game.subtitle && <p className="text-sm mt-1 opacity-80 truncate">{game.subtitle}</p>}
+        <div className="absolute bottom-0 left-0 p-2 sm:p-4 text-white">
+          <h2 className="text-base sm:text-lg font-bold truncate">{game.title}</h2>
+          {game.subtitle && <p className="text-xs sm:text-sm mt-0.5 sm:mt-1 opacity-80 truncate">{game.subtitle}</p>}
         </div>
       </div>
       {/* Game Info Bar */}
-      <div className="p-4 flex items-center justify-between bg-black bg-opacity-90 text-white border-t border-gray-800">
+      <div className="p-2 sm:p-4 flex items-center justify-between bg-black bg-opacity-90 text-white border-t border-gray-800">
         <div className="flex items-center">
           {/* Game Logo */}
-          <div className="w-12 h-12 rounded-xl overflow-hidden mr-3">
-            <img 
-              src={game.logo} 
+          <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-xl overflow-hidden mr-2 sm:mr-3">
+            <img
+              src={game.logo}
               alt={`${game.game} logo`}
               className="w-full h-full object-cover"
             />
           </div>
           {/* Game Details */}
           <div>
-            <div className="font-semibold text-sm">{game.game}</div>
-            <div className="text-xs text-gray-400">{game.developer}</div>
+            <div className="font-semibold text-xs sm:text-sm">{game.game}</div>
+            <div className="text-[10px] sm:text-xs text-gray-400">{game.developer}</div>
           </div>
         </div>
         {/* CTA Button */}
         <div className="flex flex-col items-end">
-          <button className="bg-white text-black rounded-full text-sm font-semibold px-4 py-1">
+          <button className="bg-white text-black rounded-full text-xs sm:text-sm font-semibold px-3 sm:px-4 py-0.5 sm:py-1">
             {game.ctaText}
           </button>
           {game.secondaryText && (
-            <span className="text-xs text-gray-400 mt-1">{game.secondaryText}</span>
+            <span className="text-[10px] sm:text-xs text-gray-400 mt-0.5 sm:mt-1">{game.secondaryText}</span>
           )}
         </div>
       </div>
     </div>
   );
 
+  // Drag handlers
+  const handleDragStart = () => {
+    setIsDragging(true);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  };
+  const handleDragEnd = (event, info) => {
+    setIsDragging(false);
+    // Snap to nearest card
+    let offset = info.offset.x;
+    let newScroll = scrollX + offset;
+    // Snap to nearest card width
+    let snapped = Math.round(newScroll / cardWidth) * cardWidth;
+    // Clamp so we don't go out of bounds
+    if (snapped > 0) snapped = 0;
+    if (snapped < -games.length * cardWidth) snapped = -games.length * cardWidth;
+    setScrollX(snapped);
+  };
+
   return (
-    <div className="relative w-full mx-auto py-8 overflow-hidden">
-      <motion.div 
+    <div className="relative w-full mx-auto py-6 sm:py-8 overflow-hidden">
+      <motion.div
         ref={carouselRef}
-        className="flex"
-        animate={{ x: scrollX }}
-        transition={{ ease: "easeInOut", duration: 0.5 }}
+        className="flex cursor-grab active:cursor-grabbing"
+        animate={controls}
+        drag="x"
+        dragConstraints={{ left: -games.length * cardWidth, right: 0 }}
+        dragElastic={0.15}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+        style={{ touchAction: "pan-y" }}
       >
         {extendedGames.map((game, index) => renderGameCard(game, index))}
       </motion.div>
-      
+
       {/* Dots Indicator */}
-      <div className="flex justify-center mt-6 gap-2">
+      <div className="flex justify-center mt-4 sm:mt-6 gap-1 sm:gap-2">
         {games.map((_, i) => (
           <span
             key={i}
-            className={`block w-2 h-2 rounded-full ${
-              Math.abs(Math.floor(scrollX / 320)) % games.length === i 
-                ? 'bg-blue-500' 
+            className={`block w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full ${
+              Math.abs(Math.floor(scrollX / cardWidth)) % games.length === i
+                ? 'bg-blue-500'
                 : 'bg-gray-400'
             } transition-all`}
           />

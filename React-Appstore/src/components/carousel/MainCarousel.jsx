@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import useResponsive from '../../hooks/responsive/useResponsive';
 
 export default function MainCarousel() {
   const [showLeftNav, setShowLeftNav] = useState(false);
@@ -46,6 +47,7 @@ export default function MainCarousel() {
 
   // Check if we can scroll left or right
   const checkScrollButtons = () => {
+  
     if (!carouselRef.current) return;
     
     const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
@@ -120,17 +122,17 @@ export default function MainCarousel() {
       {/* Carousel Container */}
       <div 
         ref={carouselRef}
-        className="flex overflow-x-auto gap-4 pb-4 hide-scrollbar snap-x"
+        className="flex overflow-x-auto gap-3 sm:gap-4 pb-3 sm:pb-4 hide-scrollbar snap-x"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {games.map((game) => (
           <div 
             key={game.id} 
-            className="carousel-item flex-shrink-0 w-[85%] sm:w-[45%] md:w-[45%] lg:w-[45%] snap-start"
+            className="carousel-item flex-shrink-0 w-[92%] sm:w-[45%] md:w-[45%] lg:w-[45%] snap-start"
           >
             <div className="bg-black rounded-xl overflow-hidden relative shadow-md h-full">
               {/* Background Image */}
-              <div className="relative h-48 md:h-60">
+              <div className="relative h-36 sm:h-48 md:h-60">
                 <img 
                   src={game.image} 
                   alt={game.title} 
@@ -139,23 +141,23 @@ export default function MainCarousel() {
                 
                 {/* Tag Overlay */}
                 {game.tag && (
-                  <div className="absolute top-3 left-3 bg-black bg-opacity-75 text-white text-sm rounded-md px-2 py-1">
+                  <div className="absolute top-2 sm:top-3 left-2 sm:left-3 bg-black bg-opacity-75 text-white text-xs sm:text-sm rounded-md px-1.5 sm:px-2 py-0.5 sm:py-1">
                     {game.tag}
                   </div>
                 )}
                 
                 {/* Title Overlay */}
-                <div className="absolute bottom-0 left-0 p-4 text-white">
-                  <h2 className="text-xl font-bold">{game.title}</h2>
-                  {game.subtitle && <p className="text-sm mt-1 opacity-80">{game.subtitle}</p>}
+                <div className="absolute bottom-0 left-0 p-2 sm:p-4 text-white">
+                  <h2 className="text-base md:text-sm lg:text-xl font-bold leading-tight">{game.title}</h2>
+                  {game.subtitle && <p className="text-xs md:text-xs lg:text-sm mt-0.5 sm:mt-1 opacity-80">{game.subtitle}</p>}
                 </div>
               </div>
               
               {/* Game Info Bar */}
-              <div className="p-3 flex items-center justify-between bg-black bg-opacity-90 text-white border-t border-gray-800">
+              <div className="p-2 sm:p-3 flex items-center justify-between bg-black bg-opacity-90 text-white border-t border-gray-800">
                 <div className="flex items-center">
                   {/* Game Logo */}
-                  <div className="w-10 h-10 rounded-lg overflow-hidden mr-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg overflow-hidden mr-2 sm:mr-3">
                     <img 
                       src={game.logo} 
                       alt={`${game.game} logo`}
@@ -165,18 +167,18 @@ export default function MainCarousel() {
                   
                   {/* Game Details */}
                   <div>
-                    <div className="font-medium text-sm">{game.game}</div>
-                    <div className="text-xs text-gray-400">{game.developer}</div>
+                    <div className="font-medium text-xs md:text-xs lg:text-sm">{game.game}</div>
+                    <div className="text-[10px] md:text-[11px] lg:text-xs text-gray-400">{game.developer}</div>
                   </div>
                 </div>
                 
                 {/* CTA Button */}
                 <div className="flex flex-col items-end">
-                  <button className="bg-white text-black rounded-full text-sm font-medium px-6 py-1.5">
+                  <button className="bg-white text-black rounded-full text-xs md:text-xs lg:text-sm font-medium px-4 sm:px-6 py-1 sm:py-1.5">
                     {game.ctaText}
                   </button>
                   {game.secondaryText && (
-                    <span className="text-xs text-gray-400 mt-1">{game.secondaryText}</span>
+                    <span className="text-[10px] md:text-[11px] lg:text-xs text-gray-400 mt-0.5 sm:mt-1">{game.secondaryText}</span>
                   )}
                 </div>
               </div>

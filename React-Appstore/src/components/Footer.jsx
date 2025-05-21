@@ -130,7 +130,7 @@ const Footer = () => {
         </motion.div>
 
         {/* Categories */}
-        <div className="flex flex-wrap md:text-left text-center -mb-10 -mx-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-8 gap-x-4 md:text-left text-center mb-10 px-2">
           {categories.map((category, index) => (
             <FooterCategory key={index} title={category.title} links={category.links} />
           ))}
@@ -183,7 +183,7 @@ const Footer = () => {
       <div className="bg-gray-100 dark:bg-gray-800">
         <div className="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
           <p className="text-gray-500 dark:text-gray-400 text-sm text-center sm:text-left">
-            © {new Date().getFullYear()} AppName —
+            © {new Date().getFullYear()} unawarexi —
             <a href="#" className="text-gray-600 dark:text-gray-300 ml-1" target="_blank" rel="noopener noreferrer">
               All rights reserved
             </a>

@@ -5,6 +5,7 @@ import { Search, ChevronLeft, Send, Paperclip, Smile, MoreVertical, Phone, Video
 import { Avatar, Avatar1, Avatar2, Avatar3, Avatar5 } from '../../assets/image';
 import Options from './Options';
 import Attachments from './Attachments';
+import useResponsive from '../../hooks/responsive/useResponsive';
 
 const MessagesComponent = () => {
   const [activeChat, setActiveChat] = useState(null);
@@ -16,6 +17,8 @@ const MessagesComponent = () => {
   const [showOptionsMenu, setShowOptionsMenu] = useState(false);
 
   const messageEndRef = useRef(null);
+
+  const { isMobile, isTablet, isDesktop } = useResponsive();
 
   // Mock chats data
   const chats = [
@@ -151,6 +154,7 @@ const MessagesComponent = () => {
 
   // Group creation modal
   const CreateGroupModal = () => {
+    const {isMobile, isTablet, isDesktop} = useResponsive();
     return (
       <motion.div 
         className="fixed inset-0 flex items-center justify-center z-50 px-4"
@@ -262,256 +266,279 @@ const MessagesComponent = () => {
   return (
     <div className="pb-20">
       <AnimatePresence mode="wait">
-        <div className="flex flex-col md:flex-row h-[calc(100vh-5rem)] md:h-[calc(100vh-4rem)]">
+        <div className={`flex flex-col md:flex-row h-[calc(100vh-5rem)] md:h-[calc(100vh-4rem)]`}>
           {/* Chat List */}
-          <motion.div 
-            key="chats"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className={`
-              bg-white dark:bg-gray-900 z-10
-              ${activeChat ? 'hidden md:block md:w-1/3 lg:w-1/4' : 'block w-full'}
-              h-full overflow-y-auto
-              transition-all duration-300
-            `}
-          >
-            {/* Tabs */}
-            <div className="flex items-center space-x-2 mb-4">
-              {['all', 'single', 'group'].map(tab => (
-                <button
-                  key={tab}
-                  className={`relative px-4 py-2 rounded-lg font-medium transition-colors
-                    ${activeTab === tab ? 'text-blue-600 bg-blue-50 dark:bg-blue-950' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}
-                  `}
-                  onClick={() => setActiveTab(tab)}
-                >
-                  {tab === 'all' && 'All'}
-                  {tab === 'single' && 'Single'}
-                  {tab === 'group' && 'Group'}
-                  {activeTab === tab && (
-                    <span className="absolute left-1/2 -bottom-1 transform -translate-x-1/2 w-2 h-2 bg-blue-600 rounded-full"></span>
-                  )}
-                </button>
-              ))}
-            </div>
-            {/* Back button */}
-            <div className="flex items-center mb-4">
-              <button
-                className="p-2 mr-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                onClick={() => window.history.back()}
-              >
-                <ChevronLeft size={24} />
-              </button>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Messages</h2>
-              <div className="flex-grow" />
-              <button 
-                className="bg-blue-600 hover:bg-blue-500 text-white rounded-full p-2"
-                onClick={() => setShowCreateGroup(true)}
-              >
-                <Users size={18} />
-              </button>
-            </div>
-            {/* Search */}
-            <div className="relative mb-4">
-              <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search messages..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-gray-100 dark:bg-gray-800 w-full rounded-lg py-2 pl-10 pr-4 text-gray-900 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            {/* Chat list */}
-            <div className="space-y-2">
-              {filteredChats.map(chat => (
-                <motion.div 
-                  key={chat.id}
-                  className="bg-gray-100 dark:bg-gray-800 rounded-xl p-3 flex items-center cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                  variants={itemVariants}
-                  onClick={() => setActiveChat(chat)}
-                >
-                  <div className="relative mr-3">
-                    <img 
-                      src={chat.avatar} 
-                      alt={chat.name}
-                      className="w-12 h-12 rounded-full" 
-                    />
-                    {chat.isOnline && (
-                      <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+          {!isMobile || (isMobile && !activeChat) ? (
+            <motion.div 
+              key="chats"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className={`
+                bg-white dark:bg-gray-900
+                ${isMobile ? 'w-full' : activeChat ? 'hidden md:block md:w-1/3 lg:w-1/4' : 'block w-full'}
+                h-full overflow-y-auto
+                transition-all duration-300
+              `}
+            >
+              {/* Tabs */}
+              <div className="flex items-center space-x-2 mb-4 ">
+                {['all', 'single', 'group'].map(tab => (
+                  <button
+                    key={tab}
+                    className={`relative px-4 py-2 rounded-lg font-medium transition-colors
+                      ${activeTab === tab ? 'text-blue-600 bg-blue-50 dark:bg-blue-950' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'}
+                    `}
+                    onClick={() => setActiveTab(tab)}
+                  >
+                    {tab === 'all' && 'All'}
+                    {tab === 'single' && 'Single'}
+                    {tab === 'group' && 'Group'}
+                    {activeTab === tab && (
+                      <span className="absolute left-1/2 -bottom-1 transform -translate-x-1/2 w-2 h-2 bg-blue-600 rounded-full"></span>
                     )}
-                    {chat.type === 'group' && (
-                      <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-900 rounded-full w-5 h-5 flex items-center justify-center text-xs border border-gray-300 dark:border-gray-700">
-                        <Users size={10} />
+                  </button>
+                ))}
+              </div>
+              {/* Back button */}
+              <div className="flex items-center mb-4">
+                <button
+                  className="p-2 mr-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  onClick={() => window.history.back()}
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Messages</h2>
+                <div className="flex-grow" />
+                <button 
+                  className="bg-blue-600 hover:bg-blue-500 text-white rounded-full p-2"
+                  onClick={() => setShowCreateGroup(true)}
+                >
+                  <Users size={18} />
+                </button>
+              </div>
+              {/* Search */}
+              <div className="relative mb-4">
+                <Search size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search messages..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-gray-100 dark:bg-gray-800 w-full rounded-lg py-2 pl-10 pr-4 text-gray-900 dark:text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              {/* Chat list */}
+              <div className="space-y-2">
+                {filteredChats.map(chat => (
+                  <motion.div 
+                    key={chat.id}
+                    className="bg-gray-100 dark:bg-gray-800 rounded-xl p-3 flex items-center cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                    variants={itemVariants}
+                    onClick={() => setActiveChat(chat)}
+                  >
+                    <div className="relative mr-3">
+                      <img 
+                        src={chat.avatar} 
+                        alt={chat.name}
+                        className="w-12 h-12 rounded-full" 
+                      />
+                      {chat.isOnline && (
+                        <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                      )}
+                      {chat.type === 'group' && (
+                        <div className="absolute -bottom-1 -right-1 bg-white dark:bg-gray-900 rounded-full w-5 h-5 flex items-center justify-center text-xs border border-gray-300 dark:border-gray-700">
+                          <Users size={10} />
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-grow min-w-0">
+                      <div className="flex justify-between items-baseline">
+                        <div className="font-medium text-gray-900 dark:text-white truncate">{chat.name}</div>
+                        <div className="text-xs text-gray-500 flex-shrink-0 ml-2">{chat.time}</div>
+                      </div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400 truncate">{chat.lastMessage}</div>
+                    </div>
+                    {chat.unread > 0 && (
+                      <div className="ml-2 bg-blue-600 rounded-full w-5 h-5 flex items-center justify-center text-xs text-white">
+                        {chat.unread}
                       </div>
                     )}
-                  </div>
-                  <div className="flex-grow min-w-0">
-                    <div className="flex justify-between items-baseline">
-                      <div className="font-medium text-gray-900 dark:text-white truncate">{chat.name}</div>
-                      <div className="text-xs text-gray-500 flex-shrink-0 ml-2">{chat.time}</div>
-                    </div>
-                    <div className="text-sm text-gray-500 dark:text-gray-400 truncate">{chat.lastMessage}</div>
-                  </div>
-                  {chat.unread > 0 && (
-                    <div className="ml-2 bg-blue-600 rounded-full w-5 h-5 flex items-center justify-center text-xs text-white">
-                      {chat.unread}
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-            {/* Empty state */}
-            {filteredChats.length === 0 && (
-              <div className="text-center py-10">
-                <div className="text-gray-500 dark:text-gray-400 mb-2">No messages found</div>
-                {searchQuery && (
-                  <button 
-                    className="text-blue-600 dark:text-blue-400 hover:text-blue-500"
-                    onClick={() => setSearchQuery('')}
-                  >
-                    Clear search
-                  </button>
-                )}
+                  </motion.div>
+                ))}
               </div>
-            )}
-          </motion.div>
+              {/* Empty state */}
+              {filteredChats.length === 0 && (
+                <div className="text-center py-10">
+                  <div className="text-gray-500 dark:text-gray-400 mb-2">No messages found</div>
+                  {searchQuery && (
+                    <button 
+                      className="text-blue-600 dark:text-blue-400 hover:text-blue-500"
+                      onClick={() => setSearchQuery('')}
+                    >
+                      Clear search
+                    </button>
+                  )}
+                </div>
+              )}
+            </motion.div>
+          ) : null}
 
           {/* Chat Area */}
           {activeChat && (
-            <motion.div 
-              key="chat"
-              className={`
-                bg-white dark:bg-gray-900 flex flex-col
-                fixed inset-0 md:static md:inset-auto
-                w-full md:w-2/3 lg:w-3/4
-                md:ml-2
-                transition-all duration-300
-              `}
-              variants={chatContainerVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              {/* Chat header */}
-              <div className="bg-gray-100 dark:bg-gray-800 p-3 flex items-center border-b border-gray-200 dark:border-gray-700 relative">
-                <button 
-                  className="p-2 mr-2 md:hidden" 
-                  onClick={() => setActiveChat(null)}
-                >
-                  <ArrowLeft size={20} />
-                </button>
-                <div className="flex-grow flex items-center">
-                  <div className="relative mr-3">
-                    <img 
-                      src={activeChat.avatar} 
-                      alt={activeChat.name}
-                      className="w-10 h-10 rounded-full" 
-                    />
-                    {activeChat.isOnline && (
-                      <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></div>
-                    )}
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900 dark:text-white">{activeChat.name}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {activeChat.type === 'group' 
-                        ? `${activeChat.members} members` 
-                        : (activeChat.isOnline ? 'Online' : 'Offline')
-                      }
+            (!isMobile || (isMobile && activeChat)) && (
+              <motion.div 
+                key="chat"
+                className={`
+                  bg-white dark:bg-gray-900 flex flex-col
+                  ${isMobile ? 'fixed inset-0 z-50 w-full h-[100dvh]' : 'md:static md:inset-auto w-full md:w-2/3 lg:w-3/4 md:ml-2'}
+                  transition-all duration-300
+                `}
+                variants={chatContainerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                {/* Chat header - fixed on mobile */}
+                <div className={`bg-gray-100 dark:bg-gray-800 flex items-center border-b border-gray-200 dark:border-gray-700 relative
+                  ${isMobile 
+                    ? 'fixed top-0 left-0 w-full z-50 p-2 min-h-[44px]' 
+                    : 'p-3'}
+                `}>
+                  <button 
+                    className={`${isMobile ? 'p-1 mr-1' : 'p-2 mr-2'} md:hidden`} 
+                    onClick={() => setActiveChat(null)}
+                  >
+                    <ArrowLeft size={isMobile ? 16 : 20} />
+                  </button>
+                  <div className="flex-grow flex items-center">
+                    <div className={`relative ${isMobile ? 'mr-2' : 'mr-3'}`}>
+                      <img 
+                        src={activeChat.avatar} 
+                        alt={activeChat.name}
+                        className={`${isMobile ? 'w-7 h-7' : 'w-10 h-10'} rounded-full`} 
+                      />
+                      {activeChat.isOnline && (
+                        <div className={`absolute bottom-0 right-0 ${isMobile ? 'w-2 h-2' : 'w-2.5 h-2.5'} bg-green-500 rounded-full border-2 border-white`}></div>
+                      )}
+                    </div>
+                    <div>
+                      <div className={`font-medium text-gray-900 dark:text-white ${isMobile ? 'text-sm' : ''}`}>{activeChat.name}</div>
+                      <div className={`text-xs text-gray-500 dark:text-gray-400 ${isMobile ? 'text-[10px]' : ''}`}>
+                        {activeChat.type === 'group' 
+                          ? `${activeChat.members} members` 
+                          : (activeChat.isOnline ? 'Online' : 'Offline')
+                        }
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <button className="p-2 text-gray-600">
-                    <Phone size={18} />
-                  </button>
-                  <button className="p-2 text-gray-600">
-                    <Video size={18} />
-                  </button>
-                  {activeChat.type === 'group' && (
-                    <button className="p-2 text-gray-600">
-                      <Users size={18} />
+                  <div className={`flex items-center ${isMobile ? 'space-x-1' : 'space-x-3'}`}>
+                    <button className={`${isMobile ? 'p-1' : 'p-2'} text-gray-600`}>
+                      <Phone size={isMobile ? 14 : 18} />
                     </button>
-                  )}
-                  {/* 3-dot vertical menu */}
-                  <div className="relative">
+                    <button className={`${isMobile ? 'p-1' : 'p-2'} text-gray-600`}>
+                      <Video size={isMobile ? 14 : 18} />
+                    </button>
+                    {activeChat.type === 'group' && (
+                      <button className={`${isMobile ? 'p-1' : 'p-2'} text-gray-600`}>
+                        <Users size={isMobile ? 14 : 18} />
+                      </button>
+                    )}
+                    {/* 3-dot vertical menu */}
+                    <div className="relative">
+                      <button
+                        className={`${isMobile ? 'p-1' : 'p-2'} text-gray-600`}
+                        onClick={() => setShowOptionsMenu((v) => !v)}
+                        aria-label="More options"
+                      >
+                        <MoreVertical size={isMobile ? 14 : 18} />
+                      </button>
+                      <AnimatePresence>
+                        {showOptionsMenu && (
+                          <Options
+                            onClose={() => setShowOptionsMenu(false)}
+                            chat={activeChat}
+                          />
+                        )}
+                      </AnimatePresence>
+                    </div>
+                    {/* Close icon for all screens */}
                     <button
-                      className="p-2 text-gray-600"
-                      onClick={() => setShowOptionsMenu((v) => !v)}
-                      aria-label="More options"
+                      className={`${isMobile ? 'p-1 ml-1' : 'p-2 ml-2'} text-gray-600`}
+                      onClick={() => setActiveChat(null)}
+                      aria-label="Close chat"
                     >
-                      <MoreVertical size={18} />
-                    </button>
-                    <AnimatePresence>
-                      {showOptionsMenu && (
-                        <Options
-                          onClose={() => setShowOptionsMenu(false)}
-                          chat={activeChat}
-                        />
-                      )}
-                    </AnimatePresence>
-                  </div>
-                  {/* Close icon for all screens */}
-                  <button
-                    className="p-2 ml-2 text-gray-600"
-                    onClick={() => setActiveChat(null)}
-                    aria-label="Close chat"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-              </div>
-              {/* Chat messages */}
-              <div className="flex-grow p-4 overflow-y-auto bg-gradient-to-b from-white dark:from-gray-900 to-gray-100 dark:to-gray-800">
-                <div className="flex flex-col">
-                  {activeChat.messages.map(msg => (
-                    <ChatBubble key={msg.id} message={msg} />
-                  ))}
-                  <div ref={messageEndRef} />
-                </div>
-              </div>
-              {/* Message input */}
-              <div className="bg-gray-100 dark:bg-gray-800 p-3 border-t border-gray-200 dark:border-gray-700 relative">
-                <AnimatePresence>
-                  {showOptions && (
-                    <Attachments
-                      onClose={() => setShowOptions(false)}
-                      onFileSelected={handleFileSelected}
-                      onImageSelected={handleImageSelected}
-                      onVoiceRecorded={handleVoiceRecorded}
-                    />
-                  )}
-                </AnimatePresence>
-                <div className="flex items-center space-x-2">
-                  <button 
-                    className="p-2 text-gray-500"
-                    onClick={() => setShowOptions(!showOptions)}
-                  >
-                    <Paperclip size={20} />
-                  </button>
-                  <div className="flex-grow relative">
-                    <input
-                      type="text"
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      placeholder="Type a message..."
-                      className="w-full bg-white dark:bg-gray-900 rounded-full py-2.5 px-4 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                    <button className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 text-gray-500">
-                      <Smile size={20} />
+                      <X size={isMobile ? 14 : 20} />
                     </button>
                   </div>
-                  <button 
-                    className={`p-2 rounded-full ${message.trim() ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-400'}`}
-                    disabled={!message.trim()}
-                  >
-                    <Send size={20} />
-                  </button>
                 </div>
-              </div>
-            </motion.div>
+                {/* Chat messages - scrollable area, with padding for header and input on mobile */}
+                <div className={`flex-grow overflow-y-auto bg-gradient-to-b from-white dark:from-gray-900 to-gray-100 dark:to-gray-800
+                  ${isMobile ? 'pt-[44px] pb-[56px]' : 'p-4'}
+                `}>
+                  <div className={`flex flex-col ${isMobile ? 'px-2' : 'px-4'}`}>
+                    {activeChat.messages.map(msg => (
+                      <div className={`flex ${msg.sent ? 'justify-end' : 'justify-start'} mb-2`}>
+                        {!msg.sent && msg.user && (
+                          <div className={`flex-shrink-0 ${isMobile ? 'mr-1' : 'mr-2'}`}>
+                            <img src={Avatar} alt={msg.user} className={`${isMobile ? 'w-6 h-6' : 'w-8 h-8'} rounded-full`} />
+                          </div>
+                        )}
+                        <div className={`max-w-xs lg:max-w-md ${msg.sent ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200'} rounded-2xl ${isMobile ? 'px-2 py-1 text-xs' : 'px-4 py-2'}`}>
+                          {!msg.sent && msg.user && (
+                            <div className={`text-xs text-blue-600 dark:text-blue-400 font-medium mb-0.5 ${isMobile ? 'text-[10px]' : ''}`}>{msg.user}</div>
+                          )}
+                          <p className={`${isMobile ? 'text-xs' : 'text-sm'}`}>{msg.text}</p>
+                          <div className={`text-xs opacity-70 text-right mt-0.5 ${isMobile ? 'text-[10px]' : ''}`}>{msg.time}</div>
+                        </div>
+                      </div>
+                    ))}
+                    <div ref={messageEndRef} />
+                  </div>
+                </div>
+                {/* Message input - fixed on mobile */}
+                <div className={`bg-gray-100 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 relative
+                  ${isMobile ? 'fixed bottom-0 left-0 w-full z-50 p-2 min-h-[44px]' : 'p-3'}
+                `}>
+                  <AnimatePresence>
+                    {showOptions && (
+                      <Attachments
+                        onClose={() => setShowOptions(false)}
+                        onFileSelected={handleFileSelected}
+                        onImageSelected={handleImageSelected}
+                        onVoiceRecorded={handleVoiceRecorded}
+                      />
+                    )}
+                  </AnimatePresence>
+                  <div className={`flex items-center ${isMobile ? 'space-x-1' : 'space-x-2'}`}>
+                    <button 
+                      className={`${isMobile ? 'p-1' : 'p-2'} text-gray-500`}
+                      onClick={() => setShowOptions(!showOptions)}
+                    >
+                      <Paperclip size={isMobile ? 14 : 20} />
+                    </button>
+                    <div className="flex-grow relative">
+                      <input
+                        type="text"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder="Type a message..."
+                        className={`w-full bg-white dark:bg-gray-900 rounded-full ${isMobile ? 'py-1.5 px-3 text-xs' : 'py-2.5 px-4'} text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                      />
+                      <button className={`absolute right-1 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 ${isMobile ? '' : 'right-2'}`}>
+                        <Smile size={isMobile ? 14 : 20} />
+                      </button>
+                    </div>
+                    <button 
+                      className={`rounded-full ${isMobile ? 'p-1' : 'p-2'} ${message.trim() ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-400'}`}
+                      disabled={!message.trim()}
+                    >
+                      <Send size={isMobile ? 14 : 20} />
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )
           )}
         </div>
       </AnimatePresence>

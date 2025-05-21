@@ -7,7 +7,7 @@ export const getAuthenticatedUser = () => {
     const unsubscribe = auth.onAuthStateChanged((userCred) => {
       if (userCred) {
         userCred.getIdToken().then(async (token) => {
-          console.log("token : ", token);
+         
           await fetch(`${baseURL}/validateUserJWTToken`, {
             method: "GET",
             headers: {

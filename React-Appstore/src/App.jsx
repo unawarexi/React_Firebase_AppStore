@@ -26,6 +26,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import CategoryRoutes from "./Pages/routes/PageRoutes";
+import HeaderRoutes from "./Pages/routes/HeaderRoutes";
+import OsDetectionUI from "./utils/ui/OsDetectionUi";
 
 const queryClient = new QueryClient();
 
@@ -37,12 +39,17 @@ const App = () => {
           <Routes>
             {/* {====== CLIENT USER ROUTE ======= } */}
             <Route element={<Layouts />}>
+            {/* === OS DETECTION ROUTE === */}
+              <Route path="/osdetection" element={<OsDetectionUI redirectTo="/" />} />
               <Route path="/" element={<Home />} />
               <Route path="/detail/:appid" element={<AppDetailPage />} />
               <Route path="/profile/:uid" element={<UserProfile />} />
 
               {/* === CATEGORY ROUTES === */}
               {CategoryRoutes()}
+
+              {/* === HEADER MENU ROUTES === */}
+              {HeaderRoutes()}
 
               {/* === ADMIN ROUTE === */}
               <Route path="/admin" element={<AdminLayout />}>
@@ -55,6 +62,8 @@ const App = () => {
               <Route path="/auth/*" element={<AuthLayout />}>
                 <Route index element={<Authentication />} />
               </Route>
+
+              
             </Route>
           </Routes>
           {/* ================= END OF LAYOUT ROUTE ================== */}

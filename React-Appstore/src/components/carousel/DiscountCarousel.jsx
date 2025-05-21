@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Download, Star } from 'lucide-react';
+import useResponsive from '../../hooks/responsive/useResponsive';
 
 // Sample data for games with diverse information
 const gamesData = [
@@ -274,6 +275,7 @@ export default function DiscountCarousel() {
   const [width, setWidth] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(4);
   const [autoPlay, setAutoPlay] = useState(true);
+  const {isMobile, isTablet, isDesktop} = useResponsive();
   
   // Handle window resize for responsive behavior
   useEffect(() => {
@@ -443,20 +445,22 @@ export default function DiscountCarousel() {
         </div>
         
         {/* Pagination dots */}
-        <div className="flex justify-center mt-6 space-x-2">
-          {Array.from({ length: totalPages }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`w-4 h-2.5 rounded-full transition-all duration-300 ${
-                currentIndex === index 
-                  ? "bg-indigo-600 w-8 dark:bg-indigo-400" 
-                  : "bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
+        {!isMobile && (
+          <div className="flex justify-center mt-6 space-x-2">
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`w-4 h-2.5 rounded-full transition-all duration-300 ${
+                  currentIndex === index 
+                    ? "bg-indigo-600 w-8 dark:bg-indigo-400" 
+                    : "bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500"
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

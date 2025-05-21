@@ -97,17 +97,21 @@ export default function FooterEventCarousel() {
   // Duplicate events for infinite scroll effect
   const extendedEvents = [...events, ...events, ...events];
 
-  // Always show 3 cards at a time
-  const cardsPerView = 3;
+  // Always show 3 cards at a time (1 on mobile, 2 on sm, 3 on md+)
+  const [cardsPerView, setCardsPerView] = useState(3);
 
-  // Card width is 1/3 of container width
+  // Card width is 1/3 of container width (or 1/1, 1/2, 1/3 based on screen)
   const containerRef = useRef(null);
   const [cardWidth, setCardWidth] = useState(0);
 
   useEffect(() => {
     function updateCardWidth() {
       if (containerRef.current) {
-        setCardWidth(containerRef.current.offsetWidth / cardsPerView);
+        let perView = 3;
+        if (window.innerWidth < 640) perView = 1;
+        else if (window.innerWidth < 1024) perView = 2;
+        setCardsPerView(perView);
+        setCardWidth(containerRef.current.offsetWidth / perView);
       }
     }
     updateCardWidth();
@@ -119,24 +123,45 @@ export default function FooterEventCarousel() {
   const [scrollX, setScrollX] = useState(0);
   const intervalRef = useRef(null);
   const slideInterval = 4000;
+  const isDragging = useRef(false);
 
-  // Auto-scroll logic
+  // Auto-scroll logic (pause when dragging)
   useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setScrollX(prev => {
-        const maxScroll = -cardWidth * events.length;
-        const next = prev - cardWidth;
-        if (next < maxScroll) {
-          return 0;
-        }
-        return next;
-      });
-    }, slideInterval);
+    if (!isDragging.current) {
+      intervalRef.current = setInterval(() => {
+        setScrollX(prev => {
+          const maxScroll = -cardWidth * events.length;
+          const next = prev - cardWidth;
+          if (next < maxScroll) {
+            return 0;
+          }
+          return next;
+        });
+      }, slideInterval);
+    }
     return () => clearInterval(intervalRef.current);
-  }, [events.length, cardWidth]);
+  }, [events.length, cardWidth, isDragging.current]);
 
   // Dots indicator logic
   const currentIndex = cardWidth === 0 ? 0 : (Math.abs(Math.round(scrollX / cardWidth)) % events.length);
+
+  // Drag logic
+  function handleDragStart() {
+    isDragging.current = true;
+    clearInterval(intervalRef.current);
+  }
+  function handleDragEnd(event, info) {
+    isDragging.current = false;
+    // Snap to nearest card
+    const offset = info.offset.x;
+    const newScroll = scrollX + offset;
+    let snapped = Math.round(newScroll / cardWidth) * cardWidth;
+    // Clamp to valid range
+    const minScroll = -cardWidth * (extendedEvents.length - cardsPerView);
+    if (snapped > 0) snapped = 0;
+    if (snapped < minScroll) snapped = minScroll;
+    setScrollX(snapped);
+  }
 
   // Render a single event card
   const renderEventCard = (event, idx) => (
@@ -146,13 +171,13 @@ export default function FooterEventCarousel() {
         flex: `0 0 ${cardWidth}px`,
         minWidth: `${cardWidth}px`,
         maxWidth: `${cardWidth}px`,
-        margin: "0 8px",
+        margin: "0 6px",
         boxSizing: "border-box"
       }}
-      className="bg-white bg-opacity-10 rounded-2xl overflow-hidden relative shadow-lg h-full border-2 border-white border-opacity-20 flex flex-col"
+      className="bg-white bg-opacity-10 rounded-xl md:rounded-2xl overflow-hidden relative shadow-lg h-full border border-white border-opacity-20 flex flex-col"
     >
       {/* Background Image */}
-      <div className="relative h-48 md:h-60">
+      <div className="relative h-36 sm:h-44 md:h-48 lg:h-60">
         <img
           src={event.image}
           alt={event.title}
@@ -160,21 +185,21 @@ export default function FooterEventCarousel() {
         />
         {/* Tag Overlay */}
         {event.tag && (
-          <div className="absolute top-3 left-3 bg-gradient-to-r from-black/80 to-pink-600/80 text-white text-base font-semibold rounded-md px-3 py-1 shadow">
+          <div className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-gradient-to-r from-black/80 to-pink-600/80 text-white text-xs sm:text-sm font-semibold rounded px-2 sm:px-3 py-0.5 sm:py-1 shadow">
             {event.tag}
           </div>
         )}
         {/* Title Overlay */}
-        <div className="absolute bottom-0 left-0 p-4 text-white bg-gradient-to-t from-black/80 via-black/40 to-transparent w-full">
-          <h2 className="text-2xl font-bold drop-shadow">{event.title}</h2>
-          {event.subtitle && <p className="text-base mt-1 opacity-90">{event.subtitle}</p>}
+        <div className="absolute bottom-0 left-0 p-2 sm:p-3 md:p-4 text-white bg-gradient-to-t from-black/80 via-black/40 to-transparent w-full">
+          <h2 className="text-lg sm:text-xl md:text-2xl font-bold drop-shadow">{event.title}</h2>
+          {event.subtitle && <p className="text-xs sm:text-sm mt-0.5 sm:mt-1 opacity-90">{event.subtitle}</p>}
         </div>
       </div>
       {/* Game Info Bar */}
-      <div className="p-4 flex items-center justify-between bg-white bg-opacity-20 text-gray-500 border-t border-white border-opacity-10 mt-auto">
+      <div className="p-2 sm:p-3 md:p-4 flex items-center justify-between bg-white bg-opacity-20 text-gray-500 border-t border-white border-opacity-10 mt-auto">
         <div className="flex items-center">
           {/* Game Logo */}
-          <div className="w-12 h-12 rounded-xl overflow-hidden mr-4 border-2 border-white border-opacity-40 shadow">
+          <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg md:rounded-xl overflow-hidden mr-2 sm:mr-3 md:mr-4 border border-white border-opacity-40 shadow">
             <img
               src={event.logo}
               alt={`${event.game} logo`}
@@ -183,12 +208,12 @@ export default function FooterEventCarousel() {
           </div>
           {/* Game Details */}
           <div>
-            <div className="font-semibold text-lg  text-gray-500 dark:text-gray-200">{event.game}</div>
+            <div className="font-semibold text-sm sm:text-base md:text-lg text-gray-500 dark:text-gray-200">{event.game}</div>
             <div className="text-xs text-gray-500 dark:text-gray-200">{event.developer}</div>
           </div>
         </div>
         {/* CTA Button */}
-        <button className="bg-gradient-to-r from-yellow-400 to-pink-500 text-white rounded-full text-base font-bold px-8 py-2 shadow-lg hover:scale-105 transition">
+        <button className="bg-gradient-to-r from-yellow-400 to-pink-500 text-white rounded-full text-xs sm:text-sm md:text-base font-bold px-4 sm:px-6 md:px-8 py-1.5 sm:py-2 shadow-lg hover:scale-105 transition">
           {event.ctaText}
         </button>
       </div>
@@ -196,30 +221,36 @@ export default function FooterEventCarousel() {
   );
 
   return (
-    <div className="relative py-10 rounded-t-3xl bg-transparent">
-      <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800 dark:text-gray-500 mb-8 text-center drop-shadow-lg tracking-wide">
+    <div className="relative py-6 sm:py-8 md:py-10 rounded-t-2xl md:rounded-t-3xl bg-transparent">
+      <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-800 dark:text-gray-500 mb-4 sm:mb-6 md:mb-8 text-center drop-shadow-lg tracking-wide">
         🎊 Featured Event Campaigns
       </h1>
       <div className="flex justify-center">
         <div
-          className="w-full max-w-screen-2xl overflow-x-hidden px-0"
+          className="w-full max-w-full sm:max-w-2xl lg:max-w-screen-2xl overflow-x-hidden px-0"
           ref={containerRef}
         >
           <motion.div
             className="flex"
             animate={{ x: scrollX }}
             transition={{ ease: "easeInOut", duration: 0.6 }}
+            drag="x"
+            dragConstraints={{ left: -cardWidth * (extendedEvents.length - cardsPerView), right: 0 }}
+            dragElastic={0.15}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            style={{ cursor: "grab", touchAction: "pan-x" }}
           >
             {extendedEvents.map((event, idx) => renderEventCard(event, idx))}
           </motion.div>
         </div>
       </div>
       {/* Dots Indicator */}
-      <div className="flex justify-center mt-6 space-x-2">
+      <div className="flex justify-center mt-4 sm:mt-5 md:mt-6 space-x-1 sm:space-x-2">
         {events.map((_, idx) => (
           <button
             key={idx}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-white' : 'bg-white/40'}`}
+            className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-white' : 'bg-white/40'}`}
             onClick={() => setScrollX(-cardWidth * idx)}
             aria-label={`Go to event ${idx + 1}`}
           />

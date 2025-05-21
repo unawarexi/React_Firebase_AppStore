@@ -27,11 +27,6 @@ import PuffLoader from "react-spinners/PuffLoader";
 const UserProfileContainer = () => {
   const { data: user, isLoading: userLoading, isError, refetch } = useUser();
   const queryClient = useQueryClient();
-
-  if (userLoading) {
-    return <PuffLoader color="#ffbb0b" size={40} />;
-  }
-
   const [isHover, setisHover] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
 
@@ -49,13 +44,19 @@ const UserProfileContainer = () => {
     // Store the timeout ID for later reference
     setTimeoutId(id);
   };
-
+  
   // Clear the timeout when the component unmounts to prevent memory leaks
   useEffect(() => {
     return () => {
       clearTimeout(timeoutId);
     };
   }, [timeoutId]);
+
+  if (userLoading) {
+    return <PuffLoader color="#ffbb0b" size={40} />;
+  }
+
+
 
   return (
     <div className="flex justify-center items-center gap-4 cursor-pointer relative px-40">

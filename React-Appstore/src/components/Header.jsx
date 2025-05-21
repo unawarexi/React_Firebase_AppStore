@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, HelpCircle, User, ChevronDown, Sun, Moon } from "lucide-react";
+import { Search, X, HelpCircle, User, ChevronDown, Sun, Moon, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import HeaderMenuItems from "./nav/HeaderMenuItems";
 import useResponsive from "../hooks/responsive/useResponsive";
@@ -15,6 +15,8 @@ const Header = ({ onPlatformChange }) => {
   const [activePlatform, setActivePlatform] = useState("PlayStore");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isPlatformModalOpen, setIsPlatformModalOpen] = useState(false);
   const [theme, setTheme] = useState(() => {
     if (typeof window !== "undefined") {
       return localStorage.getItem("theme") || "light";
@@ -51,13 +53,11 @@ const Header = ({ onPlatformChange }) => {
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
     if (!isSearchOpen) {
-      // Focus the search input when opening
       setTimeout(() => {
         const searchInput = document.getElementById("search-input");
         if (searchInput) searchInput.focus();
       }, 100);
     } else {
-      // Clear search when closing
       setSearchTerm("");
     }
   };
@@ -78,10 +78,13 @@ const Header = ({ onPlatformChange }) => {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
-  // Find active platform details
+  const toggleMobileMenu = () => setIsMobileMenuOpen((v) => !v);
+
+  const openPlatformModal = () => setIsPlatformModalOpen(true);
+  const closePlatformModal = () => setIsPlatformModalOpen(false);
+
   const currentPlatform = platformOptions.find(p => p.id === activePlatform) || platformOptions[0];
 
-  // Determine if user is admin (assuming user?.isAdmin or user?.role === 'admin')
   const isAdmin = user && (user.isAdmin || user.role === "admin");
 
   return (
@@ -92,65 +95,75 @@ const Header = ({ onPlatformChange }) => {
       transition={{ duration: 0.3 }}
     >
       <div className="w-full flex items-center justify-between px-4 lg:px-6 py-3">
-        {/* Logo and Navigation */}
         <div className="flex items-center">
           <motion.div 
-            className="flex items-center mr-6"
+            className="flex items-center mr-2 md:mr-6"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
             <img
               src={currentPlatform.logo}
               alt={currentPlatform.name}
-              className="h-8 w-8 mr-2"
+              className="h-8 w-8 mr-0 md:mr-2"
             />
-            <span className="text-lg font-medium text-gray-800 dark:text-white">{currentPlatform.name}</span>
+            {!isMobile && (
+              <span className="text-lg font-medium text-gray-800 dark:text-white">{currentPlatform.name}</span>
+            )}
           </motion.div>
 
-          {/* Platform Dropdown */}
-          <div className="relative mr-6">
+          {!isMobile ? (
+            <div className="relative mr-6">
+              <motion.button
+                className="flex items-center px-3 py-2 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition"
+                onClick={toggleDropdown}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <span className="text-sm font-medium mr-1">
+                  {currentPlatform.label}
+                </span>
+                <ChevronDown size={16} className={`transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              </motion.button>
+              <AnimatePresence>
+                {isDropdownOpen && (
+                  <motion.div
+                    className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-900 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-10"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {platformOptions.map((platform) => (
+                      <motion.button
+                        key={platform.id}
+                        className={`flex items-center w-full px-4 py-2 text-left text-sm ${
+                          activePlatform === platform.id 
+                            ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white' 
+                            : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800'
+                        }`}
+                        onClick={() => handlePlatformChange(platform.id)}
+                        whileHover={{ backgroundColor: "#f3f4f6" }}
+                      >
+                        <platform.icon size={16} className="mr-2" />
+                        {platform.label}
+                      </motion.button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ) : (
             <motion.button
-              className="flex items-center px-3 py-2 rounded-md bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition"
-              onClick={toggleDropdown}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+              className="ml-2 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+              onClick={openPlatformModal}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              aria-label="Change platform"
             >
-              <span className="text-sm font-medium mr-1">
-                {currentPlatform.label}
-              </span>
-              <ChevronDown size={16} className={`transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown size={18} />
             </motion.button>
+          )}
 
-            <AnimatePresence>
-              {isDropdownOpen && (
-                <motion.div
-                  className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-900 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 z-10"
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {platformOptions.map((platform) => (
-                    <motion.button
-                      key={platform.id}
-                      className={`flex items-center w-full px-4 py-2 text-left text-sm ${
-                        activePlatform === platform.id 
-                          ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white' 
-                          : 'text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800'
-                      }`}
-                      onClick={() => handlePlatformChange(platform.id)}
-                      whileHover={{ backgroundColor: "#f3f4f6" }}
-                    >
-                      <platform.icon size={16} className="mr-2" />
-                      {platform.label}
-                    </motion.button>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Desktop Navigation Tabs - Always visible on large screens regardless of search state */}
           {!isMobile && (
             <nav className="hidden md:flex">
               {tabs.map((tab) => (
@@ -180,7 +193,6 @@ const Header = ({ onPlatformChange }) => {
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Theme Toggle Button */}
           <motion.button
             className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-dark-bgSecondary transition"
             onClick={toggleTheme}
@@ -196,14 +208,52 @@ const Header = ({ onPlatformChange }) => {
           </motion.button>
         </div>
 
-        {/* Search and Profile */}
         <div className="flex items-center gap-2">
+          {isMobile && (
+            <motion.button
+              className="p-2 rounded-full hover:bg-gray-100"
+              onClick={toggleMobileMenu}
+              aria-label="Open menu"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Menu size={22} />
+            </motion.button>
+          )}
+
           <AnimatePresence>
-            {isSearchOpen ? (
+            {isSearchOpen && isMobile ? (
+              <motion.div
+                className="fixed inset-0 z-50 bg-white/95 dark:bg-dark-bg/95 flex items-center px-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                style={{ top: 0, left: 0, right: 0, bottom: 0 }}
+              >
+                <Search  onClick={toggleSearch} size={22} className="text-gray-500 mr-2" />
+                <input
+                  id="search-input"
+                  type="text"
+                  placeholder={`Search ${currentPlatform.name}`}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="bg-transparent outline-dashed py-2 rounded-xl px-2 border-none text-base font-medium text-gray-800 w-full"
+                />
+                <motion.button
+                  onClick={toggleSearch}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className="ml-2"
+                >
+                  <X size={22} className="text-gray-500" />
+                </motion.button>
+              </motion.div>
+            ) : isSearchOpen ? (
               <motion.div
                 className="flex items-center bg-gray-100 rounded-full overflow-hidden px-4 py-2"
                 initial={{ width: 48, opacity: 0 }}
-                animate={{ width: isMobile ? "100%" : 400, opacity: 1 }}
+                animate={{ width: 400, opacity: 1 }}
                 exit={{ width: 48, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
               >
@@ -236,7 +286,7 @@ const Header = ({ onPlatformChange }) => {
             )}
           </AnimatePresence>
 
-          {(!isMobile || !isSearchOpen) && (
+          {!isMobile && !isSearchOpen && (
             <>
               <motion.button
                 className="p-2 rounded-full hover:bg-gray-100"
@@ -263,7 +313,6 @@ const Header = ({ onPlatformChange }) => {
                     <User size={16} />
                   )}
                 </motion.div>
-                {/* Profile dropdown */}
                 <AnimatePresence>
                   {isProfileMenuOpen && (
                     <motion.div
@@ -293,6 +342,157 @@ const Header = ({ onPlatformChange }) => {
           )}
         </div>
       </div>
+
+      <AnimatePresence>
+        {isMobile && isMobileMenuOpen && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-black/40 flex justify-end"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={toggleMobileMenu}
+          >
+            <motion.div
+              className="bg-white dark:bg-dark-bg w-4/5 max-w-xs h-full flex flex-col p-4"
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-lg font-semibold">Menu</span>
+                <motion.button
+                  onClick={toggleMobileMenu}
+                  className="p-2 rounded-full hover:bg-gray-100"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <X size={22} />
+                </motion.button>
+              </div>
+              <div className="flex flex-col gap-2 mb-4">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab}
+                    className={`w-full text-left px-4 py-2 rounded ${
+                      activeTab === tab ? "bg-green-100 text-green-700" : "hover:bg-gray-100"
+                    }`}
+                    onClick={() => {
+                      setActiveTab(tab);
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    {tab}
+                  </button>
+                ))}
+              </div>
+              <button
+                className="flex items-center px-4 py-2 rounded hover:bg-gray-100 mb-4"
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  openPlatformModal();
+                }}
+              >
+                <RectangleGogglesIcon size={18} className="mr-2" />
+                <span>Switch Platform</span>
+              </button>
+              <button className="flex items-center px-4 py-2 rounded hover:bg-gray-100 mb-2">
+                <HelpCircle size={18} className="mr-2" />
+                <span>Help</span>
+              </button>
+              <div className="flex items-center px-4 py-2 rounded hover:bg-gray-100 cursor-pointer"
+                onClick={() => {
+                  setIsProfileMenuOpen(true);
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                {user && (user.picture || user.photoURL) ? (
+                  <img
+                    src={user.picture || user.photoURL}
+                    alt="User"
+                    className="w-7 h-7 object-cover rounded-full mr-2"
+                  />
+                ) : (
+                  <User size={18} className="mr-2" />
+                )}
+                <span>Profile</span>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isMobile && isPlatformModalOpen && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closePlatformModal}
+          >
+            <motion.div
+              className="bg-white dark:bg-dark-bg rounded-lg shadow-lg p-6 w-80"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="mb-4 text-lg font-semibold">Select Platform</div>
+              {platformOptions.map((platform) => (
+                <button
+                  key={platform.id}
+                  className={`flex items-center w-full px-4 py-3 rounded mb-2 ${
+                    activePlatform === platform.id
+                      ? "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white"
+                      : "hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200"
+                  }`}
+                  onClick={() => {
+                    handlePlatformChange(platform.id);
+                    closePlatformModal();
+                  }}
+                >
+                  <platform.icon size={20} className="mr-3" />
+                  {platform.label}
+                </button>
+              ))}
+              <button
+                className="mt-2 w-full py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
+                onClick={closePlatformModal}
+              >
+                Cancel
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isMobile && isProfileMenuOpen && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsProfileMenuOpen(false)}
+          >
+            <motion.div
+              className="bg-white dark:bg-dark-bg rounded-lg shadow-lg p-4 w-80"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <HeaderMenuItems
+                user={user}
+                isAdmin={isAdmin}
+                onClose={() => setIsProfileMenuOpen(false)}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 };

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable no-unused-vars */
+import React, { use, useState } from "react";
 import { auth } from "../config/Firebase.config";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,10 +22,14 @@ import Footer from "../components/Footer";
 import SubAppGrid from "../components/carousel/SubAppGrid";
 import DiscountCarousel from "../components/carousel/DiscountCarousel";
 import FooterEventCarousel from "../components/carousel/FooterEventCarousel";
+import useResponsive from "../hooks/responsive/useResponsive";
 
 const MainHome = () => {
   const navigate = useNavigate();
   const [isHovered, setisHovered] = useState(false);
+  const { isMobile, isTablet, isDesktop } = useResponsive();
+
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const {
     data: apps,
     isLoading: appsLoading,
@@ -36,9 +41,7 @@ const MainHome = () => {
     return <MainLoader />;
   }
 
-  const width = ResponsiveComponent();
 
-  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const toggleChat = () => {
     setIsChatOpen((prevState) => !prevState);
@@ -48,26 +51,34 @@ const MainHome = () => {
     <div className="bg-white dark:bg-gray-900 min-h-screen">
       <div
         className={`${
-          width <= 768
-            ? "w-[50%] h-full grid grid-cols-1 gap-10 "
+          isMobile
+            ? "w-full h-auto grid grid-cols-1 gap-4 px-2 py-2"
             : "w-full h-auto grid grid-cols-1 lg:grid-cols-12 gap-4 px-6 py-4"
         }`}
       >
         {/* Left section */}
-        <div className="col-span-12 lg:col-span-8 overflow-y-scroll scrollbar-none">
+        <div
+          className={`col-span-12 lg:col-span-8 ${
+            isMobile
+              ? "overflow-visible"
+              : "overflow-y-scroll scrollbar-none"
+          }`}
+        >
           {/* Content for the left section */}
           <HomeBanner />
           <MainCarousel />
 
-          <section className="mt-6">
+          <section className={`${isMobile ? "mt-2" : "mt-6"}`}>
             <PlayStoreHome />
           </section>
 
           {/* Mannually added and fetched from firebase  */}
           <motion.div
             className={`${
-              width <= 768
-                ? "mt-6 grid grid-cols-3 gap-3 w-[90%] items-center justify-between"
+              isMobile
+                ? "mt-2 grid grid-cols-3 gap-2 w-full items-center justify-between"
+                : isTablet
+                ? "mt-3 grid grid-cols-3 gap-2 w-[80%] items-center justify-between mx-4"
                 : "w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-5 py-4 my-6"
             }`}
             initial="hidden"
@@ -90,11 +101,17 @@ const MainHome = () => {
                     visible: { opacity: 1, y: 0 },
                   }}
                   transition={{ type: "spring", stiffness: 80, damping: 15 }}
-                  whileHover={{
-                    scale: 1.04,
-                    boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-                  }}
-                  className="transition-all duration-200 flex flex-col items-center p-3 cursor-pointer relative group bg-gray-100 dark:bg-gray-800 rounded-lg"
+                  whileHover={
+                    isMobile
+                      ? {}
+                      : {
+                          scale: 1.04,
+                          boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                        }
+                  }
+                  className={`transition-all duration-200 flex flex-col items-center cursor-pointer relative group bg-gray-100 dark:bg-gray-800 rounded-lg
+                    ${isMobile ? "p-1" : "p-3"}
+                  `}
                 >
                   <Link
                     to={`/detail/${app?._id}`}
@@ -103,13 +120,23 @@ const MainHome = () => {
                     <img
                       src={app?.AppIcon}
                       alt="cover"
-                      className="w-14 h-14 rounded-lg object-cover mb-2 border border-gray-200 dark:border-gray-700"
+                      className={`object-cover mb-2 border border-gray-200 dark:border-gray-700 rounded-lg
+                        ${isMobile ? "w-10 h-10" : "w-14 h-14"}
+                      `}
                     />
                     <div className="w-full flex flex-col items-center">
-                      <p className="text-xs font-semibold text-gray-900 dark:text-white truncate w-full text-center">
+                      <p
+                        className={`font-semibold text-gray-900 dark:text-white truncate w-full text-center
+                        ${isMobile ? "text-xs" : "text-xs"}
+                      `}
+                      >
                         {app?.Title}
                       </p>
-                      <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate w-full text-center">
+                      <p
+                        className={`truncate w-full text-center text-gray-500 dark:text-gray-400
+                        ${isMobile ? "text-[10px]" : "text-[10px]"}
+                      `}
+                      >
                         {app?.Company}
                       </p>
                     </div>
@@ -119,28 +146,29 @@ const MainHome = () => {
                 </motion.div>
               ))}
           </motion.div>
-          <div className="w-full">
-            <GameGrid cols={4} />
+          <div className="w-full md:mt-6 lg:mt-0 mt-0">
+            <GameGrid cols={isMobile ? 2 : isTablet ? 2 : 4} />
+            {isMobile && (
+              <div>
+                <PromoCarousel />
+                <GameGrid cols={1} />
+              </div>
+            )}
+            {isTablet && (
+              <div className="mt-6">
+                <PromoCarousel />
+                <GameGrid cols={2} />
+              </div>
+            )}
             <SubCarousel />
             <SubAppGrid />
           </div>
         </div>
 
-        {/*---------------------------------- Right section */}
-        {width <= 900 ? (
-          <div
-            className="fixed bottom-4 right-4 z-[999] bg-white dark:bg-gray-900 rounded-full p-2 shadow-md cursor-pointer "
-            onClick={toggleChat}
-          >
-            <MdOutlineMarkUnreadChatAlt
-              size={24}
-              className=" text-heroSecodary"
-            />
-          </div>
-        ) : (
+        {/* Right section */}
+        {isDesktop && (
           <div className="col-span-12 lg:col-span-4 h-full hidden lg:block">
             <PromoCarousel />
-
             <GameGrid cols={1} />
           </div>
         )}
@@ -149,7 +177,6 @@ const MainHome = () => {
       <div className="w-full mt-8">
         <RapidPlayStoreHome />
         <DiscountCarousel />
-        
       </div>
       <div className="w-full mt-8">
         <FooterEventCarousel />
