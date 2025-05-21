@@ -108,7 +108,7 @@ export default function AdminHome() {
 
   return (
     <main className="w-full min-h-screen bg-white dark:bg-gray-900 mt-10">
-      <div className=" w-full lg:max-w-[80%] lg:container px-4 md:px-20">
+      <div className="w-full px-4 md:px-20">
         <AnimatePresence mode="wait">
           {activeTab === "dashboard" && (
             <motion.div

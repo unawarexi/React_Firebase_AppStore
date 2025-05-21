@@ -37,17 +37,17 @@ const CategoryMenuItem = ({ item, isCollapsed, isMobile, onAnyItemClick }) => {
   return (
     <>
       <motion.li
-        className={`relative flex items-center w-full my-1 ${
-          item.spacing ? "mt-4" : "mt-0"
+        className={`relative flex items-center w-full my-0.5 ${
+          item.spacing ? "mt-2" : "mt-0"
         }`}
         variants={menuItemVariants}
       >
         <motion.div
-          className={`flex items-center w-full rounded-lg cursor-pointer px-4 py-3 ${
+          className={`flex items-center w-full rounded-lg cursor-pointer px-2 py-2 ${
             isOpen ? "bg-gray-700/10" : "hover:bg-gray-700/5"
           } transition-colors`}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+          whileHover={{ scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
           onClick={handleMenuClick}
         >
           <motion.div
@@ -55,12 +55,12 @@ const CategoryMenuItem = ({ item, isCollapsed, isMobile, onAnyItemClick }) => {
               isOpen ? "text-blue-500" : ""
             }`}
           >
-            <IconComponent size={18} />
+            <IconComponent size={16} />
           </motion.div>
 
           {!isCollapsed && (
             <motion.div className="flex w-full items-center justify-between">
-              <motion.span className="ml-4 text-gray-500 font-medium">
+              <motion.span className="ml-2 text-gray-500 font-medium text-[0.93rem]">
                 {item.title}
               </motion.span>
               {item.submenu && (
@@ -68,7 +68,7 @@ const CategoryMenuItem = ({ item, isCollapsed, isMobile, onAnyItemClick }) => {
                   animate={{ rotate: isOpen ? 90 : 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <ChevronRight size={16} className="text-gray-400" />
+                  <ChevronRight size={14} className="text-gray-400" />
                 </motion.div>
               )}
             </motion.div>
@@ -81,7 +81,7 @@ const CategoryMenuItem = ({ item, isCollapsed, isMobile, onAnyItemClick }) => {
         <AnimatePresence>
           {isOpen && (
             <motion.ul
-              className="ml-7 mt-1 border-l border-gray-700 pl-2"
+              className="ml-4 mt-0.5 border-l border-gray-700 pl-1"
               initial="closed"
               animate="open"
               exit="closed"
@@ -93,13 +93,13 @@ const CategoryMenuItem = ({ item, isCollapsed, isMobile, onAnyItemClick }) => {
                   <motion.li
                     key={idx}
                     variants={menuItemVariants}
-                    className="flex items-center py-2 px-3 rounded-lg my-1 cursor-pointer hover:bg-gray-500/5 transition-colors"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    className="flex items-center py-1 px-2 rounded-lg my-0.5 cursor-pointer hover:bg-gray-500/5 transition-colors"
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
                     onClick={(e) => handleSubMenuClick(e, subItem)}
                   >
-                    <SubIcon size={14} className="text-gray-700" />
-                    <span className="ml-3 text-gray-500 text-sm">{subItem.title}</span>
+                    <SubIcon size={12} className="text-gray-700" />
+                    <span className="ml-2 text-gray-500 text-xs">{subItem.title}</span>
                   </motion.li>
                 );
               })}
@@ -147,7 +147,7 @@ const AppStoreSidebar = ({
         <motion.div
           className={`h-full bg-white dark:bg-gray-900 shadow-xl overflow-hidden border-r border-gray-200 dark:border-gray-700`}
           animate={{
-            width: isCollapsed ? "5rem" : "16rem",
+            width: isCollapsed ? "3.5rem" : "11rem",
           }}
           transition={{
             type: "spring",
@@ -158,7 +158,7 @@ const AppStoreSidebar = ({
           <div className="flex flex-col h-full">
             {/* Header */}
             <motion.div
-              className={`flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 ${
+              className={`flex items-center justify-between p-2 border-b border-gray-200 dark:border-gray-700 ${
                 isCollapsed ? "justify-center" : ""
               }`}
             >
@@ -169,23 +169,23 @@ const AppStoreSidebar = ({
                   initial="closed"
                   animate="open"
                 >
-                  <span className="text-lg font-bold text-gray-900 dark:text-white mr-2">App Store</span>
+                  <span className="text-base font-bold text-gray-900 dark:text-white mr-1">App Store</span>
                 </motion.div>
               )}
 
               <motion.button
-                className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-400"
+                className="p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 text-gray-400"
                 whileTap={{ scale: 0.95 }}
                 onClick={onToggleCollapse}
               >
                 <motion.div animate={{ rotate: isCollapsed ? 0 : 180 }}>
-                  <ChevronRight size={16} />
+                  <ChevronRight size={14} />
                 </motion.div>
               </motion.button>
             </motion.div>
 
             {/* Menu Items */}
-            <motion.div className="flex-1 overflow-y-auto py-2 px-2">
+            <motion.div className="flex-1 overflow-y-auto py-1 px-1">
               <motion.ul
                 initial="closed"
                 animate="open"
@@ -209,14 +209,14 @@ const AppStoreSidebar = ({
             </motion.div>
 
             {/* Footer */}
-            <motion.div className="p-4 border-t border-gray-200 dark:border-gray-700 text-center">
+            <motion.div className="p-2 border-t border-gray-200 dark:border-gray-700 text-center">
               {!isCollapsed && (
                 <motion.div
                   variants={menuItemVariants}
                   initial="closed"
                   animate="open"
                 >
-                  <span className="text-xs text-gray-500 dark:text-gray-400">© 2025 App Store</span>
+                  <span className="text-[0.7rem] text-gray-500 dark:text-gray-400">© 2025 App Store</span>
                 </motion.div>
               )}
             </motion.div>

@@ -8,20 +8,27 @@ for this project we're going to be making use of
 - TAILWIND FOR STYLES
 - MATERIAL-UI FOR SOME EASY COMPONENTS
 
-![Video Overview](./thumb.png)
+<!-- Video Overview Start -->
+<!-- Replace YouTube embed with local video -->
+<video width="640" controls>
+  <source src="./presentation/appstore.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+<!-- Video Overview End -->
 
 <!-- Images Grid Start -->
 ## App Screenshots
 
-| ![img1](./presentation/Screenshot%202025-05-03%20at%2018.38.26.png)  | ![img3](./presentation/darkgrid.png) |
-|----------------------------|----------------------------|
-| ![img5](./presentation/deatil.png) | ![img6](./presentation/lightGrid.png) |
+| ![img1](./presentation/Screenshot%202025-05-03%20at%2018.38.26.png) | ![img2](./presentation/featured.png) | ![img3](./presentation/darkgrid.png) |
+|----------------------------|----------------------------|----------------------------|
+| ![img4](.) | ![img5](./presentation/deatil.png) | ![img6](./presentation/lightGrid.png) |
+| ![img7](./presentation/authphone.png) | ![img8](./presentation/Xiaomi-12-localhost.png) | ![img9](./presentation/iPhone-14-Plus-localhost.png) |
 
 <br/>
 
 ## Resposiveness
 
-| ![rtc1](./images/rtc.png) | ![rtc2](./images/rtc2.png) | ![rtc3](./images/rtc3.png) |
+| ![rtc1](./presentation/res.png) | ![rtc2](./presentation/tabres.png) | ![rtc3](./presentation/phoneres.png) |
 |---------------------------|---------------------------|---------------------------|
 
 ### Theme
@@ -38,7 +45,7 @@ for this project we're going to be making use of
 
 ## Real-time communication
 
-| ![rtc1](./presentation/darkgroup.png) | ![rtc2](./presentation/message.png) | ![rtc3](./images/rtc3.png) |
+| ![rtc1](./presentation/darkgroup.png) | ![rtc2](./presentation/message.png) | ![rtc3](./presentation/phonechat.png) |
 |---------------------------|---------------------------|---------------------------|
 
 ## version control

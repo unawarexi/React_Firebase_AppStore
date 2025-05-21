@@ -51,14 +51,14 @@ const AdminLayout = () => {
   const { isMobile } = ResponsiveComponent();
 
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-start px-4 py-2  bg-white dark:bg-gray-900 ">
+    <div className="w-full h-full flex flex-col items-center justify-start px-2 py-1 bg-white dark:bg-gray-900 ">
       <AdminHeader />
 
       {/* Navigation container */}
       <div
         className={`
           w-full h-auto flex items-center justify-center 
-          px-2 py-2  gap-4 lg:gap-8 border-b border-gray-200 dark:border-gray-700
+          px-1 py-1 gap-2 lg:gap-4 border-b border-gray-200 dark:border-gray-700
         `}
         style={{
           WebkitOverflowScrolling: "touch",
@@ -114,7 +114,7 @@ const AdminLayout = () => {
             </div>
           </motion.div>
         ) : (
-          <div className="flex flex-row my-4 mt-10 gap-4 lg:gap-8">
+          <div className="flex flex-row my-2 mt-6 gap-2 lg:gap-4">
             {navItems.map((item, idx) => (
               <NavLink
                 key={idx}
@@ -122,8 +122,8 @@ const AdminLayout = () => {
                 className={({ isActive }) =>
                   `
                     flex items-center justify-center
-                    px-3 py-1.5 text-sm rounded-lg
-                    sm:px-4 sm:py-2 sm:text-base sm:rounded-full
+                    px-2 py-1 text-xs rounded-md
+                    sm:px-3 sm:py-1.5 sm:text-sm sm:rounded-lg
                     border-2
                     border-blue-600
                     bg-blue-200
@@ -139,7 +139,7 @@ const AdminLayout = () => {
                     dark:hover:bg-blue-600 dark:hover:text-white dark:hover:border-blue-300
                     active:bg-blue-600
                     dark:active:bg-blue-700
-                    min-w-[${item.minWidth}]
+                    min-w-[${parseInt(item.minWidth) - 30}px]
                     text-center
                     ${item.extraClass || ""}
                     ${
@@ -149,9 +149,12 @@ const AdminLayout = () => {
                     }
                   `
                 }
-                style={{ minWidth: item.minWidth }}
+                style={{ minWidth: `${parseInt(item.minWidth) - 30}px` }}
               >
-                {item.label}
+                {/* Reduce icon size for desktop */}
+                {typeof item.label === "object" && item.label.type && item.label.type.displayName === "FaHouseChimney"
+                  ? React.cloneElement(item.label, { className: "text-base" })
+                  : item.label}
               </NavLink>
             ))}
           </div>

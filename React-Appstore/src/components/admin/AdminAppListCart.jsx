@@ -26,6 +26,13 @@ const trashVariants = {
   tap: { scale: 0.93 }
 };
 
+// New modal variants for better positioning
+const modalVariants = {
+  initial: { opacity: 0, scale: 0.8 },
+  animate: { opacity: 1, scale: 1, transition: { type: "spring", stiffness: 300, damping: 25 } },
+  exit: { opacity: 0, scale: 0.8, transition: { duration: 0.2 } }
+};
+
 const AdminAppListCart = ({ data }) => {
   const { data: user } = useUser();
   const { refetch: refetchApps } = useApps();
@@ -77,18 +84,19 @@ const AdminAppListCart = ({ data }) => {
 
       <AnimatePresence>
         {isDelete && (
-          <motion.div
-            {...smoothPopIn}
-            className="fixed inset-0 bg-black/30 backdrop-blur-md flex items-center justify-center z-50"
-          >
+          <div className="fixed inset-0 z-50 overflow-auto flex justify-center items-center pointer-events-auto">
+            <div 
+              className="fixed inset-0 bg-black/30 backdrop-blur-sm" 
+              onClick={() => setisDelete(false)}
+            />
             <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 180, damping: 18 }}
-              className="bg-white rounded-lg shadow-xl border border-gray-200 p-5 flex flex-col items-center gap-4 min-w-[220px]"
+              variants={modalVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="bg-white rounded-lg shadow-xl border border-gray-200 p-4 flex flex-col items-center gap-3 w-full max-w-xs mx-4 z-50 relative"
             >
-              <h2 className={`${width <= 768 ? "text-xs font-normal" : "font-medium text-lg"} text-gray-800 text-center`}>
+              <h2 className={`${width <= 768 ? "text-xs font-normal" : "font-medium text-xs"} text-gray-800 text-center`}>
                 Are you sure you want to delete this app?
               </h2>
               <div className="flex items-center justify-center gap-2 w-full">
@@ -114,7 +122,7 @@ const AdminAppListCart = ({ data }) => {
                 </motion.button>
               </div>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </motion.div>
