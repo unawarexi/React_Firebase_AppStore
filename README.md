@@ -19,21 +19,21 @@ for this project we're going to be making use of
 <!-- Images Grid Start -->
 ## App Screenshots
 
-| ![img1](./presentation/Screenshot%202025-05-03%20at%2018.38.26.png) | ![img2](./presentation/featured.png) | ![img3](./presentation/darkgrid.png) |
+| <img src="./presentation/Screenshot%202025-05-03%20at%2018.38.26.png" width="200" height="200" /> | <img src="./presentation/featured.png" width="200" height="200" /> | <img src="./presentation/darkgrid.png" width="200" height="200" /> |
 |----------------------------|----------------------------|----------------------------|
-| ![img4](./presentation/iPhone-14-Plus-localhost%20(1).png) | ![img5](./presentation/tabauth.png) | ![img6](./presentation/Galaxy-Fold2-localhost%20(2).png) |
-| ![img7](./presentation/authphone.png) | ![img8](./presentation/Xiaomi-12-localhost.png) | ![img9](./presentation/iPhone-14-Plus-localhost%20(2).png) |
+| <img src="./presentation/iPhone-14-Plus-localhost%20(1).png" width="200" height="200" /> | <img src="./presentation/tabauth.png" width="200" height="200" /> | <img src="./presentation/Galaxy-Fold2-localhost%20(2).png" width="200" height="200" /> |
+| <img src="./presentation/authphone.png" width="200" height="200" /> | <img src="./presentation/Xiaomi-12-localhost.png" width="200" height="200" /> | <img src="./presentation/iPhone-14-Plus-localhost%20(2).png" width="200" height="200" /> |
 
 <br/>
 
 ## Resposiveness
 
-| ![rtc1](./presentation/deatil.png) | ![rtc2](./presentation/tabres.png) | ![rtc3](./presentation/phoneres.png) |
+| <img src="./presentation/deatil.png" width="200" height="200" /> | <img src="./presentation/tabres.png" width="200" height="200" /> | <img src="./presentation/phoneres.png" width="200" height="200" /> |
 |---------------------------|---------------------------|---------------------------|
 
 ### Theme
 
-| ![img7](./presentation/dark.png) | ![img8](./presentation/light.png) | 
+| <img src="./presentation/dark.png" width="200" height="200" /> | <img src="./presentation/light.png" width="200" height="200" /> | 
 |----------------------------------|----------------------------------|
 
 <!-- Images Grid End -->
